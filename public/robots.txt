@@ -1,0 +1,9 @@
+# ==============================================================================
+# UrbanNest Lifestyle Store — Robots Exclusion Protocol
+# ==============================================================================
+
+User-agent: *
+Allow: /
+
+# Sitemap Index
+Sitemap: https://urbannest-lifestyle.store/sitemap.xml

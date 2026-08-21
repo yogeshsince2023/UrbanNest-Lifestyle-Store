@@ -1,0 +1,74 @@
+[
+  {
+    "id": "test-01",
+    "name": "Elena Rostova",
+    "location": "London, UK",
+    "roleTag": "Repeat Patron",
+    "productPurchased": "Stoneware Pitcher",
+    "category": "Home Décor",
+    "rating": 5,
+    "quote": "The hand-pinched stoneware pitcher has a substantial, grounding weight in the hand. The unrefined moss glaze rim catches morning light beautifully, and pouring tea from it has become my favorite daily grounding ritual.",
+    "date": "February 2026",
+    "verified": true
+  },
+  {
+    "id": "test-02",
+    "name": "Marcus Vance",
+    "location": "San Francisco, CA",
+    "roleTag": "Interior Architect",
+    "productPurchased": "Washed Normandy Linen Throw",
+    "category": "Home Décor",
+    "rating": 5,
+    "quote": "Finding washed linen with this degree of textural integrity is rare. The heavyweight flax holds its natural drape without feeling synthetic, and the frayed selvedge borders add effortless character to our studio living space.",
+    "date": "January 2026",
+    "verified": true
+  },
+  {
+    "id": "test-03",
+    "name": "Chloe & David",
+    "location": "Seattle, WA",
+    "roleTag": "Wedding Gift Buyer",
+    "productPurchased": "Tea Ceremony Gift Box",
+    "category": "Gifts",
+    "rating": 5,
+    "quote": "We ordered three customized Tea Ceremony and Botanical Candle gift parcels for our bridal party. The tactile unboxing experience, tied with cotton twine and personalized handwritten gift tags, brought our friends to tears.",
+    "date": "February 2026",
+    "verified": true
+  },
+  {
+    "id": "test-04",
+    "name": "Aarav Mehta",
+    "location": "Bengaluru, India",
+    "roleTag": "Calligraphy Enthusiast",
+    "productPurchased": "Cotton-Rag Journal & Dip Pen",
+    "category": "Stationery",
+    "rating": 5,
+    "quote": "The deckle-edge cotton rag journal paper handles fountain pen ink with zero bleed-through. Paired with the turned walnut dip pen, journaling in the evening feels like a mindful meditation rather than a desk task.",
+    "date": "January 2026",
+    "verified": true
+  },
+  {
+    "id": "test-05",
+    "name": "Sophie Lin",
+    "location": "Brooklyn, NY",
+    "roleTag": "Verified Collector",
+    "productPurchased": "Wild Moss & Cedar Candle",
+    "category": "Gifts",
+    "rating": 5,
+    "quote": "The Wild Moss & Cedar candle burns clean and soot-free with pure botanical wax. There is no artificial perfume headache — just the honest, calming scent of damp cedar needles, crushed moss, and warm beeswax.",
+    "date": "December 2025",
+    "verified": true
+  },
+  {
+    "id": "test-06",
+    "name": "Devika Sharma",
+    "location": "Mill Valley, CA",
+    "roleTag": "Studio Member",
+    "productPurchased": "Waxed Canvas Forager Tote",
+    "category": "Lifestyle Accessories",
+    "rating": 5,
+    "quote": "I take the Waxed Canvas Forager Tote to the local market every weekend. It has weathered rain and heavy market produce for months, only growing softer and developing a richer patina with every outing.",
+    "date": "January 2026",
+    "verified": true
+  }
+]

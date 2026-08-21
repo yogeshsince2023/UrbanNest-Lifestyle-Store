@@ -1,0 +1,76 @@
+:root {
+  /* ==========================================================================
+     UrbanNest Lifestyle Store — Core Design Tokens (Light Theme)
+     ========================================================================== */
+
+  /* Palette */
+  --color-paper: #EDEAE1;
+  --color-ink: #26261F;
+  --color-moss: #5C6B4F;
+  --color-moss-dark: #45513A;
+  --color-moss-light: #768666;
+  --color-clay: #B5652D;
+  --color-clay-dark: #964F20;
+  --color-clay-light: #CE7C44;
+  --color-brass: #A98544;
+  --color-brass-dark: #8D6E34;
+  --color-brass-light: #C39F5D;
+  --color-cloud: #F7F5EF;
+
+  /* Focus Ring (Non-negotiable A11y Floor) */
+  --focus-ring-color: var(--color-moss);
+  --focus-ring-offset: 2px;
+  --focus-ring-width: 2px;
+
+  /* Typography */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Work Sans", system-ui, -apple-system, sans-serif;
+  --font-utility: "Space Mono", monospace;
+
+  /* Parcel & Tag Geometries */
+  --radius-parcel: 0.875rem; /* 14px soft wrapped parcel radius */
+  --radius-tag: 0.375rem;    /* 6px gift tag radius */
+  --radius-pill: 9999px;
+
+  /* Shadows (Light) */
+  --shadow-parcel: 0 10px 30px -10px rgba(38, 38, 31, 0.08);
+  --shadow-parcel-hover: 0 20px 40px -15px rgba(38, 38, 31, 0.15);
+  --shadow-peel: 2px 2px 0 0 rgba(38, 38, 31, 0.08);
+}
+
+/* ==========================================================================
+   UrbanNest Lifestyle Store — Dark Theme Tokens
+   Curated warm charcoal & elevated surface contrast (not inverted defaults)
+   ========================================================================== */
+.dark,
+[data-theme="dark"] {
+  /* Dark Paper: Deep warm charcoal, not pure harsh black */
+  --color-paper: #181614;
+
+  /* Dark Ink: Warm parchment cream / soft linen */
+  --color-ink: #EDE8DF;
+
+  /* Dark Cloud: Slightly elevated warm charcoal for card surface contrast */
+  --color-cloud: #24211E;
+
+  /* Luminous Earthy Accents */
+  --color-moss: #7E936E;
+  --color-moss-dark: #9EB58D;
+  --color-moss-light: #607352;
+
+  --color-clay: #C97841;
+  --color-clay-dark: #E5955E;
+  --color-clay-light: #AB5E2A;
+
+  --color-brass: #CFA652;
+  --color-brass-dark: #DEC078;
+  --color-brass-light: #A17A2C;
+
+  /* Focus Ring */
+  --focus-ring-color: var(--color-moss-dark);
+
+  /* Shadows (Dark ambient contrast) */
+  --shadow-parcel: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
+  --shadow-parcel-hover: 0 20px 40px -15px rgba(0, 0, 0, 0.65);
+  --shadow-peel: 2px 2px 0 0 rgba(0, 0, 0, 0.3);
+}

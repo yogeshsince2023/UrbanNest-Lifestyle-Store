@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage Landmark -->
+  <url>
+    <loc>https://urbannest-lifestyle.store/</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Curated Shop & Catalog -->
+  <url>
+    <loc>https://urbannest-lifestyle.store/#shop</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Founder Story & Brand Philosophy -->
+  <url>
+    <loc>https://urbannest-lifestyle.store/#about</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Patron Reviews & Testimonials -->
+  <url>
+    <loc>https://urbannest-lifestyle.store/#reviews</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Physical Studio Workshop & Hours -->
+  <url>
+    <loc>https://urbannest-lifestyle.store/#location</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Studio Concierge & Order Inquiry -->
+  <url>
+    <loc>https://urbannest-lifestyle.store/#contact</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

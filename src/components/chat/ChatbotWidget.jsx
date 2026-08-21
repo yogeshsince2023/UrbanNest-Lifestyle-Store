@@ -1,0 +1,233 @@
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MessageSquare, Sparkles, X, Bot, ArrowRight } from 'lucide-react';
+import '@n8n/chat/style.css';
+import { createChat } from '@n8n/chat';
+import { cn } from '../../utils/cn';
+
+// =============================================================================
+// N8N WEBHOOK CONFIGURATION:
+// Paste your live N8N Chat Trigger Webhook URL below:
+// Current active endpoint: https://soham6050.app.n8n.cloud/webhook/a35826c3-52aa-487c-a499-7da1565c630b/chat
+// =============================================================================
+export const DEFAULT_CHATBOT_WEBHOOK_URL =
+  'https://soham6050.app.n8n.cloud/webhook/a35826c3-52aa-487c-a499-7da1565c630b/chat';
+
+// =============================================================================
+// FALLBACK & TROUBLESHOOTING CHECKLIST:
+// If the chatbot widget fails to load, connect, or stream responses:
+// 1. Check Script / Content-Security-Policy: Ensure external connections to app.n8n.cloud are allowed.
+// 2. N8N Workflow Active State: Verify the N8N workflow toggle is switched to 'Active' (Production).
+// 3. Webhook URL: Confirm the endpoint URL ends in /chat and matches your N8N Chat Trigger node.
+// 4. CORS Headers: Verify that the N8N Chat Trigger has 'Allowed Origins' set to '*' or 'http://localhost:5173'.
+// 5. Network / Browser Adblocker: Some aggressive privacy extensions block websocket/webhook chat traffic.
+// =============================================================================
+
+const PROACTIVE_STORAGE_KEY = 'urbannest_proactive_chat_v1';
+
+/**
+ * ChatbotWidget Component
+ *
+ * Implements Step 14 requirements:
+ * - Official @n8n/chat package integration with createChat()
+ * - Configured with import.meta.env.VITE_N8N_CHATBOT_URL
+ * - Themed in Moss (#5C6B4F), Work Sans font, and warm parcel surfaces
+ * - Floating launcher in the bottom-right with gift-tag eyelet styling
+ * - 4-5s proactive greeting bubble (once per session)
+ * - Safe layout offset from WhatsApp button (Step 15)
+ *
+ * @param {Object} props
+ * @param {string} [props.className] - Additional wrapper class names
+ */
+export function ChatbotWidget({ className }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [showGreeting, setShowGreeting] = useState(false);
+  const chatInitializedRef = useRef(false);
+  const containerRef = useRef(null);
+
+  const webhookUrl =
+    import.meta.env.VITE_N8N_CHATBOT_URL || DEFAULT_CHATBOT_WEBHOOK_URL;
+
+  // 1. Initialize @n8n/chat instance on mount
+  useEffect(() => {
+    if (chatInitializedRef.current) return;
+    chatInitializedRef.current = true;
+
+    try {
+      createChat({
+        webhookUrl,
+        target: '#n8n-chat-root',
+        mode: 'window',
+        showWelcomeScreen: true,
+        defaultLanguage: 'en',
+        initialMessages: [
+          'Hello! Welcome to UrbanNest Lifestyle Store. 🌿',
+          'I am your AI Studio Concierge. How can I assist you with our handcrafted pottery, washed linens, or bespoke gift parcels today?',
+        ],
+        i18n: {
+          en: {
+            title: 'UrbanNest Studio Concierge',
+            subtitle: 'Artisan curation & order guidance powered by N8N',
+            footer: 'Crafted with mindfulness • UrbanNest Store',
+            getStarted: 'Start New Conversation',
+            inputPlaceholder: 'Ask about stoneware glazes, parcel gifts...',
+          },
+        },
+      });
+    } catch (err) {
+      console.warn('[N8N Chatbot Init Notice]: Fallback container active.', err);
+    }
+  }, [webhookUrl]);
+
+  // 2. Proactive Greeting Bubble Trigger (once per session after ~4.5 seconds)
+  useEffect(() => {
+    let timerId;
+    try {
+      const alreadyShown = sessionStorage.getItem(PROACTIVE_STORAGE_KEY);
+      if (!alreadyShown && !isOpen) {
+        timerId = setTimeout(() => {
+          setShowGreeting(true);
+          sessionStorage.setItem(PROACTIVE_STORAGE_KEY, 'true');
+        }, 4500);
+      }
+    } catch {
+      // Session storage blocked
+    }
+
+    return () => {
+      if (timerId) clearTimeout(timerId);
+    };
+  }, [isOpen]);
+
+  // 3. Dismiss greeting and close chat on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        if (showGreeting) {
+          setShowGreeting(false);
+        }
+        if (isOpen) {
+          setIsOpen(false);
+          const rootEl = document.getElementById('n8n-chat-root');
+          const n8nCloseBtn = rootEl?.querySelector('.n8n-chat-toggle, .chat-close, button[aria-label*="close" i]');
+          if (n8nCloseBtn) n8nCloseBtn.click();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showGreeting, isOpen]);
+
+
+  // Open the N8N chat window programmatically
+  const handleOpenChat = () => {
+    setShowGreeting(false);
+    setIsOpen((prev) => !prev);
+
+    // Trigger the N8N chat toggle inside the chat root
+    const rootEl = document.getElementById('n8n-chat-root');
+    const n8nBtn =
+      rootEl?.querySelector('button') ||
+      document.querySelector('.n8n-chat-toggle, .chat-window-toggle, .chat-toggle');
+    if (n8nBtn) {
+      n8nBtn.click();
+    }
+  };
+
+
+  const handleDismissGreeting = (e) => {
+    e.stopPropagation();
+    setShowGreeting(false);
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className={cn(
+        'fixed bottom-6 right-6 z-40 flex flex-col items-end pointer-events-none select-none',
+        className
+      )}
+      aria-label="Artisan Concierge Chat Widget"
+    >
+      {/* Target Mount for @n8n/chat UI */}
+      <div id="n8n-chat-root" className="pointer-events-auto" />
+
+      {/* Proactive Greeting Bubble */}
+      <AnimatePresence>
+        {showGreeting && (
+          <motion.div
+            initial={{ opacity: 0, y: 15, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.92 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            onClick={handleOpenChat}
+            className="pointer-events-auto mb-3 max-w-[280px] sm:max-w-xs bg-cloud/95 backdrop-blur-md text-ink p-4 rounded-parcel border border-ink/15 shadow-parcel hover:shadow-parcel-hover cursor-pointer transition-all group relative mr-1"
+          >
+            {/* Signature Gift Tag Hole Accent */}
+            <div className="absolute top-3 left-3 w-2 h-2 rounded-full bg-paper border border-ink/20" />
+
+            <div className="flex items-start justify-between gap-2 pl-3">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-tag bg-moss/20 text-moss-dark flex items-center justify-center shrink-0">
+                  <Bot className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold font-utility text-ink flex items-center gap-1">
+                    Studio Concierge
+                    <span className="w-1.5 h-1.5 rounded-full bg-moss animate-pulse" />
+                  </div>
+                  <div className="text-[10px] font-utility text-ink/50">Online & Ready</div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleDismissGreeting}
+                aria-label="Dismiss proactive greeting"
+                className="p-1 rounded-tag hover:bg-paper text-ink/50 hover:text-ink transition-colors cursor-pointer"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <p className="mt-2.5 text-xs font-body text-ink/85 leading-relaxed pl-3">
+              Have a question about our slow-crafted goods, glaze batches, or gift parcel curation?
+            </p>
+
+            <div className="mt-3 pt-2 border-t border-ink/10 flex items-center justify-between text-[11px] font-utility text-moss-dark pl-3 font-semibold group-hover:translate-x-0.5 transition-transform">
+              <span>Chat with Artisan Assistant</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Floating Gift-Tag Launcher Button */}
+      <motion.button
+        type="button"
+        onClick={handleOpenChat}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        aria-label="Open Studio Concierge Chatbot"
+        className="pointer-events-auto relative group flex items-center gap-2.5 bg-moss hover:bg-moss-dark text-cloud px-4 py-3 rounded-parcel border-2 border-moss-dark/40 shadow-parcel hover:shadow-parcel-hover transition-colors cursor-pointer"
+      >
+        {/* Left Punched Tag Hole Detail */}
+        <span
+          aria-hidden="true"
+          className="w-2.5 h-2.5 rounded-full bg-paper border border-moss-dark/50 shadow-inner"
+        />
+
+        <div className="flex items-center gap-2">
+          <MessageSquare className="w-4 h-4 text-cloud" />
+          <span className="text-xs font-utility font-bold uppercase tracking-wider text-cloud hidden sm:inline-block">
+            Concierge AI
+          </span>
+        </div>
+
+        <Sparkles className="w-3.5 h-3.5 text-brass-light" />
+      </motion.button>
+    </div>
+  );
+}
+
+export default ChatbotWidget;

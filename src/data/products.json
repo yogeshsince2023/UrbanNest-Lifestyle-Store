@@ -1,0 +1,162 @@
+[
+  {
+    "id": "prod-01",
+    "name": "Hand-Pinched Stoneware Pitcher",
+    "category": "Home Décor",
+    "price": 1850,
+    "shortDescription": "Raw textured clay exterior with an unrefined moss glaze rim, wood-fired for 48 hours.",
+    "tags": ["ceramics", "stoneware", "artisan", "tableware", "earthy"],
+    "image": "/assets/images/products/stoneware-pitcher.jpg",
+    "featured": true
+  },
+  {
+    "id": "prod-02",
+    "name": "Washed Normandy Linen Throw",
+    "category": "Home Décor",
+    "price": 2400,
+    "shortDescription": "Heirloom heavyweight European flax with frayed selvedge borders and organic plant dye.",
+    "tags": ["linen", "textiles", "slow-living", "home", "organic"],
+    "image": "/assets/images/products/linen-throw.jpg",
+    "featured": true
+  },
+  {
+    "id": "prod-03",
+    "name": "Terracotta Fluted Incense Dish",
+    "category": "Home Décor",
+    "price": 450,
+    "shortDescription": "Wheel-thrown raw terracotta dish designed to catch ash and support stick or cone incense.",
+    "tags": ["terracotta", "incense", "minimal", "ceramics"],
+    "image": "/assets/images/products/incense-dish.jpg",
+    "featured": false
+  },
+  {
+    "id": "prod-04",
+    "name": "Hand-Carved Olive Wood Bowl",
+    "category": "Home Décor",
+    "price": 1250,
+    "shortDescription": "Sustainably harvested ancient olive wood, carved by hand and conditioned with cold-pressed walnut oil.",
+    "tags": ["woodwork", "kitchen", "natural", "serving"],
+    "image": "/assets/images/products/olive-bowl.jpg",
+    "featured": false
+  },
+  {
+    "id": "prod-05",
+    "name": "Wild Moss & Cedar Botanical Candle",
+    "category": "Gifts",
+    "price": 850,
+    "shortDescription": "Hand-poured beeswax and rapeseed candle infused with Big Sur cedarwood and crushed lichen.",
+    "tags": ["candle", "apothecary", "scent", "beeswax", "gift-set"],
+    "image": "/assets/images/products/botanical-candle.jpg",
+    "featured": true
+  },
+  {
+    "id": "prod-06",
+    "name": "Artisan Tea Ceremony Gift Box",
+    "category": "Gifts",
+    "price": 2200,
+    "shortDescription": "Curated parcel containing Kyoto sencha green tea, a brass scoop, and two hand-pinched cups.",
+    "tags": ["tea", "gift-parcel", "ceremony", "ceramics", "brass"],
+    "image": "/assets/images/products/tea-box.jpg",
+    "featured": true
+  },
+  {
+    "id": "prod-07",
+    "name": "Cold-Processed Herbal Soap Trio",
+    "category": "Gifts",
+    "price": 480,
+    "shortDescription": "Three cured herbal bars: Eucalyptus Clay, Rosemary Oat, and Bergamot Honey in kraft wrap.",
+    "tags": ["soap", "apothecary", "botanical", "small-gift", "body"],
+    "image": "/assets/images/products/soap-trio.jpg",
+    "featured": false
+  },
+  {
+    "id": "prod-08",
+    "name": "Solid Brass Bookmark & Clip Set",
+    "category": "Gifts",
+    "price": 650,
+    "shortDescription": "Hand-buffed raw brass bookmark and page clips that develop a warm antique patina over time.",
+    "tags": ["brass", "reading", "metalwork", "keepsake"],
+    "image": "/assets/images/products/brass-bookmark.jpg",
+    "featured": false
+  },
+  {
+    "id": "prod-09",
+    "name": "Handmade Cotton-Rag Hardbound Journal",
+    "category": "Stationery",
+    "price": 950,
+    "shortDescription": "Deckle-edge recycled cotton rag paper, coptic-bound with waxed linen thread and raw canvas cover.",
+    "tags": ["journal", "paper", "cotton-rag", "writing", "keepsake"],
+    "image": "/assets/images/products/cotton-journal.jpg",
+    "featured": true
+  },
+  {
+    "id": "prod-10",
+    "name": "Letterpress Botanical Note Cards (Set of 6)",
+    "category": "Stationery",
+    "price": 380,
+    "shortDescription": "Printed on a vintage Heidelberg press using deep-embossed wildflower illustrations and recycled envelopes.",
+    "tags": ["cards", "letterpress", "greetings", "stationery"],
+    "image": "/assets/images/products/notecards.jpg",
+    "featured": false
+  },
+  {
+    "id": "prod-11",
+    "name": "Turned Walnut & Brass Dip Pen",
+    "category": "Stationery",
+    "price": 1350,
+    "shortDescription": "Hand-turned American walnut body fitted with a solid brass ferrule and interchangeable steel nib.",
+    "tags": ["calligraphy", "pen", "wood", "brass", "desk"],
+    "image": "/assets/images/products/dip-pen.jpg",
+    "featured": false
+  },
+  {
+    "id": "prod-12",
+    "name": "Hand-Dyed Silk Velvet Ribbon Spool",
+    "category": "Stationery",
+    "price": 420,
+    "shortDescription": "Botanically dyed silk velvet on a wooden spool, ideal for mindful gift parcels and heirloom wrapping.",
+    "tags": ["ribbon", "wrapping", "silk", "craft"],
+    "image": "/assets/images/products/silk-ribbon.jpg",
+    "featured": false
+  },
+  {
+    "id": "prod-13",
+    "name": "Waxed Canvas Forager Everyday Tote",
+    "category": "Lifestyle Accessories",
+    "price": 2800,
+    "shortDescription": "Weatherproof 14oz waxed canvas with vegetable-tanned leather straps and solid copper rivets.",
+    "tags": ["bag", "canvas", "leather", "everyday", "travel"],
+    "image": "/assets/images/products/canvas-tote.jpg",
+    "featured": true
+  },
+  {
+    "id": "prod-14",
+    "name": "Pure Beeswax Kitchen Food Wraps (Pack of 3)",
+    "category": "Lifestyle Accessories",
+    "price": 490,
+    "shortDescription": "Organic cotton infused with local beeswax, pine rosin, and jojoba oil to replace single-use plastics.",
+    "tags": ["eco", "beeswax", "kitchen", "zero-waste"],
+    "image": "/assets/images/products/beeswax-wraps.jpg",
+    "featured": false
+  },
+  {
+    "id": "prod-15",
+    "name": "Woven Natural Hemp Lounge Slippers",
+    "category": "Lifestyle Accessories",
+    "price": 1450,
+    "shortDescription": "Breathable hand-woven wild hemp uppers with soft recycled cork soles for peaceful indoor pacing.",
+    "tags": ["hemp", "footwear", "home-wear", "natural"],
+    "image": "/assets/images/products/hemp-slippers.jpg",
+    "featured": false
+  },
+  {
+    "id": "prod-16",
+    "name": "Pocket Match Striker & Brass Box",
+    "category": "Lifestyle Accessories",
+    "price": 750,
+    "shortDescription": "Solid knurled brass cylinder with a knurled striker plate base and water-resistant gasket lid.",
+    "tags": ["brass", "everyday-carry", "accessories", "lifestyle"],
+    "image": "/assets/images/products/matchbox.jpg",
+    "featured": false
+  }
+]

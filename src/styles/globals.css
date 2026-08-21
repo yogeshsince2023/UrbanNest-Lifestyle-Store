@@ -1,0 +1,143 @@
+@import './variables.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    color: var(--color-ink);
+    background-color: var(--color-paper);
+    font-family: var(--font-body);
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Accessibility Floor: Visible Keyboard Focus Rings in Moss */
+  :focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color) !important;
+    outline-offset: var(--focus-ring-offset) !important;
+  }
+
+  /* Global Headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-feature-settings: "soft" 100;
+  }
+
+  /* Utility & Price Labels */
+  .font-utility,
+  .price-tag,
+  .badge-tag {
+    font-family: var(--font-utility);
+  }
+}
+
+@layer components {
+  /* Signature Gift-Tag Motif Component */
+  .gift-tag {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--radius-tag);
+    font-family: var(--font-utility);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  }
+
+  /* Gift Tag Hole Accent */
+  .gift-tag-hole::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--color-paper);
+    border: 1px solid currentColor;
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  /* Parcel Card Lift & Peel Hover Effect */
+  .parcel-card {
+    background-color: var(--color-cloud);
+    border-radius: var(--radius-parcel);
+    box-shadow: var(--shadow-parcel);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .parcel-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-parcel-hover);
+  }
+}
+
+/* Page-Wide Smooth Color Transition on Theme Toggle (250ms) */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition: background-color 250ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 250ms cubic-bezier(0.16, 1, 0.3, 1),
+              color 250ms cubic-bezier(0.16, 1, 0.3, 1),
+              fill 250ms cubic-bezier(0.16, 1, 0.3, 1),
+              stroke 250ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Motion Respect: Strict zero-duration bypass for prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================================================= */
+/* N8N Chatbot Widget Design System Overrides */
+/* ========================================================================= */
+:root {
+  --chat--color-primary: #5C6B4F;
+  --chat--color-primary-shade-50: #45513A;
+  --chat--color-primary-shade-100: #37412E;
+  --chat--color-secondary: #EDEAE1;
+  --chat--color-light: #F7F5EF;
+  --chat--color-light-shade-50: #EDEAE1;
+  --chat--color-light-shade-100: #E2DFD4;
+  --chat--color-dark: #26261F;
+  --chat--font-family: 'Work Sans', system-ui, -apple-system, sans-serif;
+  --chat--border-radius: 0.875rem;
+  --chat--window--width: 380px;
+  --chat--window--height: 580px;
+  --chat--toggle--background: #5C6B4F;
+  --chat--toggle--hover--background: #45513A;
+  --chat--toggle--active--background: #37412E;
+  --chat--toggle--color: #F7F5EF;
+}
+
+.dark {
+  --chat--color-primary: #7E936E;
+  --chat--color-primary-shade-50: #5C6B4F;
+  --chat--color-primary-shade-100: #45513A;
+  --chat--color-secondary: #24211E;
+  --chat--color-light: #24211E;
+  --chat--color-light-shade-50: #181614;
+  --chat--color-light-shade-100: #12100E;
+  --chat--color-dark: #EDE8DF;
+  --chat--toggle--background: #7E936E;
+  --chat--toggle--hover--background: #5C6B4F;
+  --chat--toggle--active--background: #45513A;
+  --chat--toggle--color: #181614;
+}
+
