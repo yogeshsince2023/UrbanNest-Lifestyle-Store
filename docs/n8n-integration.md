@@ -47,13 +47,35 @@ VITE_WHATSAPP_PHONE="919876543210"
      ```
 
 2. **AI Chatbot**:
-   - In N8N, add an **N8N Chat Trigger** node connected to an AI Agent or LLM chain.
+   - In N8N, add an **N8N Chat Trigger** node connected to an **AI Agent** (using OpenAI / Anthropic / Groq).
    - Copy the Chat Webhook URL.
    - Update `VITE_N8N_CHATBOT_URL` in `.env`.
 
 ---
 
-## 3. Resilience & Error Handling
+## 3. N8N AI Agent System Prompt & Guardrails
+
+To ensure the AI Chatbot **only answers questions related to UrbanNest Lifestyle Store** and politely declines off-topic inquiries, paste the following system prompt into your N8N **AI Agent** node:
+
+```markdown
+You are the Studio Concierge for UrbanNest Lifestyle Store — an artisanal home décor, gift parcel, and mindful stationery studio located at 412 Throckmorton Ave, Mill Valley, CA.
+
+### CORE BEHAVIOR & RULES:
+1. ONLY answer questions directly related to UrbanNest Lifestyle Store:
+   - Product catalog (ceramics, French linen throws, beeswax candles, handmade journals, olive wood bowls, gift parcels)
+   - Store hours (Tuesday - Saturday: 10:00 AM - 6:00 PM, Sunday: 11:00 AM - 4:00 PM, Monday: Closed)
+   - Artisan materials, slow-crafting techniques, wood-firing, botanical dyes
+   - Parcel curation, shipping, and order inquiries
+   - Workshop visits and custom gift requests
+2. If a user asks ANY question unrelated to the store (e.g. coding, math, general trivia, politics, sports, external topics), politely decline:
+   "As the UrbanNest Studio Concierge, I can only assist with questions regarding our handcrafted wares, artisan ceramics, gift parcels, workshop hours, and orders. How can I help you with our collection today?"
+3. Maintain a warm, mindful, elegant, and hospitable tone.
+4. Prices in our store range from ₹380 to ₹2,800.
+```
+
+---
+
+## 4. Resilience & Error Handling
 
 - **Honeypot Shielding**: Hidden `website_url` field catches automated bot spam.
 - **Timeout Protection**: 10-second `AbortController` timeout prevents UI hangs on slow networks.
