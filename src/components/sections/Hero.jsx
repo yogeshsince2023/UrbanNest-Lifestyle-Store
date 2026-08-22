@@ -271,13 +271,22 @@ export function Hero({ onExploreClick, onAskClick, className }) {
 
               {/* Main Featured Photo Area */}
               <div className="relative w-full aspect-4/3 sm:aspect-16/11 rounded-parcel overflow-hidden bg-paper/60 border border-ink/10 mb-4 shadow-inner">
-                <img
-                  src={selectedShowcase.image}
-                  alt={selectedShowcase.name}
-                  className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
-                  loading="eager"
-                  decoding="async"
-                />
+                <picture>
+                  <source
+                    srcSet={selectedShowcase.image.replace(/\.(jpg|jpeg|png)$/i, '.webp')}
+                    type="image/webp"
+                  />
+                  <img
+                    src={selectedShowcase.image}
+                    alt={selectedShowcase.name}
+                    width={600}
+                    height={400}
+                    className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                    loading="eager"
+                    decoding="async"
+                    fetchPriority="high"
+                  />
+                </picture>
 
                 {/* Top-Left Category & Signature Tag */}
                 <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5">
@@ -346,12 +355,20 @@ export function Hero({ onExploreClick, onAskClick, className }) {
                         )}
                         aria-label={`Preview ${item.name}`}
                       >
-                        <img
-                          src={item.image}
-                          alt=""
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
+                        <picture>
+                          <source
+                            srcSet={item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp')}
+                            type="image/webp"
+                          />
+                          <img
+                            src={item.image}
+                            alt=""
+                            width={80}
+                            height={80}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        </picture>
                         {isSelected && (
                           <span
                             aria-hidden="true"

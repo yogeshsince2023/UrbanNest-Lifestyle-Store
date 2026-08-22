@@ -89,14 +89,22 @@ export function ProductCard({ product, onAddToCart, className }) {
       {/* Media / Tactile Product Visual Area */}
       <CardMedia className="h-48 bg-paper/60 border-b border-ink/10 relative overflow-hidden select-none">
         {product.image && !imgFailed ? (
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
-            decoding="async"
-            onError={handleImgError}
-          />
+          <picture>
+            <source
+              srcSet={product.image.replace(/\.(jpg|jpeg|png)$/i, '.webp')}
+              type="image/webp"
+            />
+            <img
+              src={product.image}
+              alt={product.name}
+              width={600}
+              height={400}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+              decoding="async"
+              onError={handleImgError}
+            />
+          </picture>
         ) : (
           /* Emoji fallback for missing images */
           <div className="w-full h-full flex items-center justify-center p-6">
