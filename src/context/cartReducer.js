@@ -18,26 +18,7 @@ export function calculateCartTotals(items = []) {
 /**
  * Default seeded initial items for out-of-the-box demonstration
  */
-export const DEFAULT_INITIAL_ITEMS = [
-  {
-    id: 'prod-01',
-    name: 'Hand-Pinched Stoneware Pitcher',
-    category: 'Home Décor',
-    price: 1850,
-    shortDescription: 'Raw textured clay exterior with an unrefined moss glaze rim.',
-    image: '/assets/images/products/stoneware-pitcher.jpg',
-    quantity: 1,
-  },
-  {
-    id: 'prod-05',
-    name: 'Wild Moss & Cedar Botanical Candle',
-    category: 'Gifts',
-    price: 850,
-    shortDescription: 'Hand-poured beeswax and rapeseed candle infused with Big Sur cedarwood.',
-    image: '/assets/images/products/botanical-candle.jpg',
-    quantity: 2,
-  },
-];
+export const DEFAULT_INITIAL_ITEMS = [];
 
 /**
  * Cart Reducer handling all parcel operations
