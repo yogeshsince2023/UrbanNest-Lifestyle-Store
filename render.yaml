@@ -1,0 +1,36 @@
+# =============================================================================
+# Render Blueprint Specification for UrbanNest Lifestyle Store
+# Deploys as a fast, globally distributed Static Site with React Router rewrite
+# =============================================================================
+services:
+  - type: web
+    name: urbannest-lifestyle-store
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    autoDeploy: true
+    branch: main
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+    routes:
+      # React Router SPA catch-all rewrite to prevent 404 on page refresh
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_N8N_QUERY_FORM_URL
+        value: https://yogeshsince2023.app.n8n.cloud/webhook/website-query
+      - key: VITE_N8N_CHATBOT_URL
+        value: https://soham6050.app.n8n.cloud/webhook/a35826c3-52aa-487c-a499-7da1565c630b/chat
+      - key: VITE_WHATSAPP_PHONE
+        value: "919876543210"
+      - key: VITE_STORE_BASE_URL
+        value: https://urbannest-lifestyle.store/
