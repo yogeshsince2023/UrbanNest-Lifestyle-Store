@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ShoppingBag,
@@ -14,62 +15,44 @@ import { useTheme } from '../../hooks';
 import { cn } from '../../utils/cn';
 
 /**
- * Navigation items configuration
+ * Navigation items — now routes, not hash anchors
  */
 const NAV_LINKS = [
-  { label: 'Home', href: '#home', id: 'home' },
-  { label: 'Shop', href: '#shop', id: 'shop' },
-  { label: 'About', href: '#about', id: 'about' },
-  { label: 'Reviews', href: '#reviews', id: 'reviews' },
-  { label: 'Contact', href: '#contact', id: 'contact' },
+  { label: 'Home', path: '/' },
+  { label: 'Shop', path: '/shop' },
+  { label: 'About', path: '/about' },
+  { label: 'Reviews', path: '/reviews' },
+  { label: 'Contact', path: '/contact' },
 ];
 
 /**
  * Responsive Navbar Component
  *
+ * Uses react-router's useLocation for active state — no scroll-spy,
+ * so no cursor-jumping during navigation.
+ *
  * @param {Object} props
- * @param {number} [props.cartCount=3] - Initial static cart count badge
- * @param {Function} [props.onCartClick] - Optional cart icon click handler
- * @param {Function} [props.onThemeToggle] - Optional theme toggle callback
+ * @param {number} [props.cartCount=0] - Cart item count badge
+ * @param {Function} [props.onCartClick] - Cart icon click handler
+ * @param {Function} [props.onThemeToggle] - Theme toggle callback
  */
-export function Navbar({ cartCount = 3, onCartClick, onThemeToggle }) {
+export function Navbar({ cartCount = 0, onCartClick, onThemeToggle }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
   const { theme, isDark, toggleTheme } = useTheme();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-
-  // Track scroll position for sticky background & accurate Scroll-Spy
+  // Track scroll position for sticky background
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 40);
-
-      // Robust Scroll-Spy: determine active section by viewport offset
-      const navOffset = 140;
-      let currentSection = 'home';
-
-      const sections = NAV_LINKS.map((link) => ({
-        id: link.id,
-        el: document.getElementById(link.id),
-      })).filter((s) => s.el !== null);
-
-      for (const section of sections) {
-        const top = section.el.offsetTop - navOffset;
-        const height = section.el.offsetHeight;
-        if (scrollY >= top && scrollY < top + height) {
-          currentSection = section.id;
-        }
-      }
-
-      setActiveSection(currentSection);
+      setIsScrolled(window.scrollY > 40);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
 
   // Close mobile drawer on Escape key
   useEffect(() => {
@@ -94,27 +77,11 @@ export function Navbar({ cartCount = 3, onCartClick, onThemeToggle }) {
     };
   }, [isMobileMenuOpen]);
 
-  // Smooth scroll handler
-  const handleNavClick = (e, targetId) => {
+  // Route navigation handler — replaces scroll-spy
+  const handleNavClick = (e, path) => {
     e.preventDefault();
     setIsMobileMenuOpen(false);
-    setActiveSection(targetId);
-
-    const targetElement = document.getElementById(targetId);
-    if (targetElement) {
-      const navHeight = 76;
-      const targetPosition =
-        targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth',
-      });
-    } else if (targetId === 'home') {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }
+    navigate(path);
   };
 
   // Toggle dark/light mode via ThemeContext
@@ -122,7 +89,6 @@ export function Navbar({ cartCount = 3, onCartClick, onThemeToggle }) {
     toggleTheme();
     if (onThemeToggle) onThemeToggle(!isDark);
   };
-
 
   return (
     <>
@@ -139,10 +105,10 @@ export function Navbar({ cartCount = 3, onCartClick, onThemeToggle }) {
             
             {/* 1. Logotype & Wordmark */}
             <a
-              href="#home"
-              onClick={(e) => handleNavClick(e, 'home')}
+              href="/"
+              onClick={(e) => handleNavClick(e, '/')}
               className="group inline-flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss focus-visible:ring-offset-2 rounded-tag transition-transform active:scale-[0.98]"
-              aria-label="UrbanNest Lifestyle Store — Return to top"
+              aria-label="UrbanNest Lifestyle Store — Return to home"
             >
               <div className="relative w-8 h-8 md:w-9 md:h-9 rounded-tag bg-moss flex items-center justify-center text-cloud shadow-sm group-hover:bg-moss-dark transition-colors">
                 {/* Signature chamfered tag hole inside logo icon */}
@@ -159,18 +125,18 @@ export function Navbar({ cartCount = 3, onCartClick, onThemeToggle }) {
               </div>
             </a>
 
-            {/* 2. Desktop Navigation Links (Scroll-Spy Enabled) */}
+            {/* 2. Desktop Navigation Links (Route-Based Active State) */}
             <nav
               aria-label="Main Navigation"
               className="hidden md:flex items-center gap-1 lg:gap-2 bg-cloud/70 backdrop-blur-sm px-3 py-1.5 rounded-pill border border-ink/8 shadow-sm"
             >
               {NAV_LINKS.map((link) => {
-                const isActive = activeSection === link.id;
+                const isActive = location.pathname === link.path;
                 return (
                   <a
-                    key={link.id}
-                    href={link.href}
-                    onClick={(e) => handleNavClick(e, link.id)}
+                    key={link.path}
+                    href={link.path}
+                    onClick={(e) => handleNavClick(e, link.path)}
                     aria-current={isActive ? 'page' : undefined}
                     className={cn(
                       'relative px-3.5 py-1.5 text-xs font-utility uppercase tracking-wider rounded-tag transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss',
@@ -192,15 +158,15 @@ export function Navbar({ cartCount = 3, onCartClick, onThemeToggle }) {
             {/* 3. Action Hub: CTA Button, Cart Badge & Theme Switcher */}
             <div className="flex items-center gap-2 sm:gap-3">
               
-              {/* Primary CTA: Ask Us Anything (Scrolls to Contact / Inquiry form) */}
+              {/* Primary CTA: Ask Us Anything */}
               <div className="hidden lg:inline-flex">
                 <Button
                   variant="primary"
                   color="moss"
                   size="sm"
                   leftIcon={<MessageCircle className="w-3.5 h-3.5" />}
-                  onClick={(e) => handleNavClick(e, 'contact')}
-                  aria-label="Ask Us Anything — Jump to inquiry form"
+                  onClick={(e) => handleNavClick(e, '/contact')}
+                  aria-label="Ask Us Anything — Go to inquiry form"
                 >
                   Ask Us Anything
                 </Button>
@@ -224,7 +190,7 @@ export function Navbar({ cartCount = 3, onCartClick, onThemeToggle }) {
                 )}
               </button>
 
-              {/* Dark / Light Mode Switcher Toggle with Smooth Animated Icons */}
+              {/* Dark / Light Mode Switcher Toggle */}
               <button
                 type="button"
                 onClick={handleToggleTheme}
@@ -248,7 +214,6 @@ export function Navbar({ cartCount = 3, onCartClick, onThemeToggle }) {
                 </AnimatePresence>
               </button>
 
-
               {/* Mobile Hamburger Toggle Button (< 768px) */}
               <button
                 type="button"
@@ -259,21 +224,18 @@ export function Navbar({ cartCount = 3, onCartClick, onThemeToggle }) {
                 className="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-tag bg-cloud text-ink border border-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss transition-colors"
               >
                 <div className="relative w-5 h-4 flex flex-col justify-between">
-                  {/* Top Bar */}
                   <span
                     className={cn(
                       'w-full h-0.5 bg-ink rounded-full transition-all duration-300 origin-left',
                       isMobileMenuOpen && 'rotate-45 translate-x-0.5 -translate-y-0.5'
                     )}
                   />
-                  {/* Middle Bar */}
                   <span
                     className={cn(
                       'w-full h-0.5 bg-ink rounded-full transition-opacity duration-200',
                       isMobileMenuOpen && 'opacity-0'
                     )}
                   />
-                  {/* Bottom Bar */}
                   <span
                     className={cn(
                       'w-full h-0.5 bg-ink rounded-full transition-all duration-300 origin-left',
@@ -329,12 +291,12 @@ export function Navbar({ cartCount = 3, onCartClick, onThemeToggle }) {
                 {/* Navigation Links */}
                 <nav className="flex flex-col space-y-1">
                   {NAV_LINKS.map((link) => {
-                    const isActive = activeSection === link.id;
+                    const isActive = location.pathname === link.path;
                     return (
                       <a
-                        key={link.id}
-                        href={link.href}
-                        onClick={(e) => handleNavClick(e, link.id)}
+                        key={link.path}
+                        href={link.path}
+                        onClick={(e) => handleNavClick(e, link.path)}
                         className={cn(
                           'flex items-center justify-between px-4 py-3 rounded-tag text-sm font-utility uppercase tracking-wider transition-colors',
                           isActive
@@ -362,7 +324,7 @@ export function Navbar({ cartCount = 3, onCartClick, onThemeToggle }) {
                   size="md"
                   className="w-full justify-center"
                   leftIcon={<MessageCircle className="w-4 h-4" />}
-                  onClick={(e) => handleNavClick(e, 'contact')}
+                  onClick={(e) => handleNavClick(e, '/contact')}
                 >
                   Ask Us Anything
                 </Button>

@@ -161,14 +161,14 @@ export function ChatbotWidget({ className }) {
             exit={{ opacity: 0, y: 10, scale: 0.92 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             onClick={handleOpenChat}
-            className="pointer-events-auto mb-3 max-w-[280px] sm:max-w-xs bg-cloud/95 backdrop-blur-md text-ink p-4 rounded-parcel border border-ink/15 shadow-parcel hover:shadow-parcel-hover cursor-pointer transition-all group relative mr-1"
+            className="pointer-events-auto mb-3 max-w-[280px] sm:max-w-xs bg-cloud/95 dark:bg-[#24211E]/95 backdrop-blur-md text-ink p-4 rounded-parcel border border-ink/15 dark:border-moss/30 shadow-parcel hover:shadow-parcel-hover cursor-pointer transition-all group relative mr-1"
           >
             {/* Signature Gift Tag Hole Accent */}
             <div className="absolute top-3 left-3 w-2 h-2 rounded-full bg-paper border border-ink/20" />
 
             <div className="flex items-start justify-between gap-2 pl-3">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-tag bg-moss/20 text-moss-dark flex items-center justify-center shrink-0">
+                <div className="w-7 h-7 rounded-tag bg-moss/20 dark:bg-moss/30 text-moss-dark dark:text-moss-light flex items-center justify-center shrink-0">
                   <Bot className="w-4 h-4" />
                 </div>
                 <div>
@@ -194,7 +194,7 @@ export function ChatbotWidget({ className }) {
               Have a question about our slow-crafted goods, glaze batches, or gift parcel curation?
             </p>
 
-            <div className="mt-3 pt-2 border-t border-ink/10 flex items-center justify-between text-[11px] font-utility text-moss-dark pl-3 font-semibold group-hover:translate-x-0.5 transition-transform">
+            <div className="mt-3 pt-2 border-t border-ink/10 dark:border-ink/20 flex items-center justify-between text-[11px] font-utility text-moss-dark dark:text-moss-light pl-3 font-semibold group-hover:translate-x-0.5 transition-transform">
               <span>Chat with Artisan Assistant</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </div>
@@ -209,7 +209,7 @@ export function ChatbotWidget({ className }) {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         aria-label="Open Studio Concierge Chatbot"
-        className="pointer-events-auto relative group flex items-center gap-2.5 bg-moss hover:bg-moss-dark text-cloud px-4 py-3 rounded-parcel border-2 border-moss-dark/40 shadow-parcel hover:shadow-parcel-hover transition-colors cursor-pointer"
+        className="pointer-events-auto relative group flex items-center gap-2.5 bg-moss hover:bg-moss-dark dark:bg-moss-light dark:hover:bg-moss text-[#F7F5EF] dark:text-[#181614] font-semibold px-4 py-3 rounded-parcel border-2 border-moss-dark/40 dark:border-moss-light/50 shadow-parcel hover:shadow-parcel-hover transition-colors cursor-pointer"
       >
         {/* Left Punched Tag Hole Detail */}
         <span
@@ -218,13 +218,13 @@ export function ChatbotWidget({ className }) {
         />
 
         <div className="flex items-center gap-2">
-          <MessageSquare className="w-4 h-4 text-cloud" />
-          <span className="text-xs font-utility font-bold uppercase tracking-wider text-cloud hidden sm:inline-block">
+          <MessageSquare className="w-4 h-4 text-[#F7F5EF] dark:text-[#181614]" />
+          <span className="text-xs font-utility font-bold uppercase tracking-wider text-[#F7F5EF] dark:text-[#181614] hidden sm:inline-block">
             Concierge AI
           </span>
         </div>
 
-        <Sparkles className="w-3.5 h-3.5 text-brass-light" />
+        <Sparkles className="w-3.5 h-3.5 text-brass-light dark:text-brass-dark" />
       </motion.button>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { ShoppingBag, Check, Sparkles } from 'lucide-react';
 import { Tag } from '../ui/Tag';
 import { Button } from '../ui/Button';
@@ -65,6 +65,9 @@ export function ProductCard({ product, onAddToCart, className }) {
     }, 1200);
   };
 
+  const [imgFailed, setImgFailed] = useState(false);
+  const handleImgError = useCallback(() => setImgFailed(true), []);
+
   return (
     <Card
       padding="none"
@@ -84,17 +87,28 @@ export function ProductCard({ product, onAddToCart, className }) {
       </div>
 
       {/* Media / Tactile Product Visual Area */}
-      <CardMedia className="h-48 bg-paper/60 border-b border-ink/10 flex items-center justify-center p-6 text-center relative overflow-hidden select-none">
-        {/* Subtle Textured Grid */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(var(--color-ink)_1px,transparent_1px)] [background-size:14px_14px] opacity-[0.035] pointer-events-none"
-        />
-
-        {/* Circular Artisan Icon Hub */}
-        <div className="w-20 h-20 rounded-full bg-cloud/90 border border-ink/15 flex items-center justify-center text-3xl shadow-inner transform group-hover:scale-108 transition-transform duration-300">
-          <span>{catStyle.icon}</span>
-        </div>
+      <CardMedia className="h-48 bg-paper/60 border-b border-ink/10 relative overflow-hidden select-none">
+        {product.image && !imgFailed ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+            decoding="async"
+            onError={handleImgError}
+          />
+        ) : (
+          /* Emoji fallback for missing images */
+          <div className="w-full h-full flex items-center justify-center p-6">
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-[radial-gradient(var(--color-ink)_1px,transparent_1px)] [background-size:14px_14px] opacity-[0.035] pointer-events-none"
+            />
+            <div className="w-20 h-20 rounded-full bg-cloud/90 border border-ink/15 flex items-center justify-center text-3xl shadow-inner transform group-hover:scale-108 transition-transform duration-300">
+              <span>{catStyle.icon}</span>
+            </div>
+          </div>
+        )}
 
         {/* Top-Left Category Tag */}
         <div className="absolute top-3 left-3 z-10">
@@ -141,7 +155,7 @@ export function ProductCard({ product, onAddToCart, className }) {
           <div className="text-[11px] font-utility text-ink/55 uppercase tracking-wider mb-1">
             {catStyle.subtext}
           </div>
-          <CardTitle className="text-lg leading-snug group-hover:text-moss-dark transition-colors">
+          <CardTitle className="text-lg leading-snug group-hover:text-moss-dark transition-colors break-words">
             {product.name}
           </CardTitle>
           <CardDescription className="line-clamp-2 mt-1.5 text-xs sm:text-sm text-ink/75 leading-relaxed">

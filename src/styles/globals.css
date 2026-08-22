@@ -126,18 +126,23 @@
   --chat--toggle--color: #F7F5EF;
 }
 
-.dark {
+.dark,
+[data-theme="dark"] {
   --chat--color-primary: #7E936E;
   --chat--color-primary-shade-50: #5C6B4F;
   --chat--color-primary-shade-100: #45513A;
   --chat--color-secondary: #24211E;
   --chat--color-light: #24211E;
-  --chat--color-light-shade-50: #181614;
-  --chat--color-light-shade-100: #12100E;
+  --chat--color-light-shade-50: #1C1917;
+  --chat--color-light-shade-100: #141210;
   --chat--color-dark: #EDE8DF;
   --chat--toggle--background: #7E936E;
-  --chat--toggle--hover--background: #5C6B4F;
-  --chat--toggle--active--background: #45513A;
-  --chat--toggle--color: #181614;
+  --chat--toggle--hover--background: #9EB58D;
+  --chat--toggle--active--background: #5C6B4F;
+  --chat--toggle--color: #F7F5EF;
+  --chat--message--bot--background: #2E2A26;
+  --chat--message--bot--color: #EDE8DF;
+  --chat--message--user--background: #5C6B4F;
+  --chat--message--user--color: #F7F5EF;
 }
 

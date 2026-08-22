@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Sparkles,
   MapPin,
@@ -15,11 +16,11 @@ import { Button } from '../ui/Button';
 import { Tag } from '../ui/Tag';
 
 const QUICK_LINKS = [
-  { label: 'Home', href: '#home', id: 'home' },
-  { label: 'Shop Collections', href: '#shop', id: 'shop' },
-  { label: 'Our Story (About)', href: '#about', id: 'about' },
-  { label: 'Customer Reviews', href: '#reviews', id: 'reviews' },
-  { label: 'Contact & Concierge', href: '#contact', id: 'contact' },
+  { label: 'Home', path: '/' },
+  { label: 'Shop Collections', path: '/shop' },
+  { label: 'Our Story (About)', path: '/about' },
+  { label: 'Customer Reviews', path: '/reviews' },
+  { label: 'Contact & Concierge', path: '/contact' },
 ];
 
 const SOCIAL_LINKS = [
@@ -55,25 +56,12 @@ const SOCIAL_LINKS = [
 export function Footer() {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const navigate = useNavigate();
 
-  // Smooth scroll handler for quick links
-  const handleNavClick = (e, targetId) => {
+  // Navigation handler for quick links
+  const handleNavClick = (e, path) => {
     e.preventDefault();
-    const targetElement = document.getElementById(targetId);
-    if (targetElement) {
-      const navHeight = 76;
-      const targetPosition =
-        targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth',
-      });
-    } else if (targetId === 'home') {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }
+    navigate(path);
   };
 
   /**
@@ -180,10 +168,10 @@ export function Footer() {
             </h3>
             <ul className="space-y-2.5">
               {QUICK_LINKS.map((link) => (
-                <li key={link.id}>
+                <li key={link.path}>
                   <a
-                    href={link.href}
-                    onClick={(e) => handleNavClick(e, link.id)}
+                    href={link.path}
+                    onClick={(e) => handleNavClick(e, link.path)}
                     className="group inline-flex items-center gap-1.5 text-sm text-ink/75 hover:text-moss font-body transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss rounded-tag"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-ink/25 group-hover:bg-moss transition-colors" />
