@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
   ShoppingBag,
@@ -8,7 +9,6 @@ import {
   Calendar,
   ArrowRight,
   ShieldCheck,
-  Package,
 } from 'lucide-react';
 import { Tag } from '../ui/Tag';
 import { Button } from '../ui/Button';
@@ -42,47 +42,52 @@ const TRUST_STATS = [
 ];
 
 /**
- * Curated shelf showcase items for the hero visual
+ * Curated signature showcase items for the interactive hero visual
  */
-const SHELF_ITEMS = [
+const HERO_SHOWCASE_ITEMS = [
   {
-    id: 'ceramic-pourer',
-    category: 'Ceramics',
-    title: 'Stoneware Pourer № 14',
-    origin: 'Hand-thrown in Devon',
-    tag: 'Small Batch',
+    id: 'prod-01',
+    name: 'Hand-Pinched Stoneware Pitcher',
+    category: 'Ceramics & Living',
+    tag: 'Master Potter Batch',
     tagColor: 'clay',
-    price: '$38.00',
-    icon: '🏺',
-    badge: 'Limited Run',
-    offsetClass: 'top-2 -left-2 sm:-left-4',
-    rotate: '-rotate-2',
+    price: '₹1,850',
+    origin: 'Wood-fired for 48h • Devon Clay',
+    image: '/assets/images/products/stoneware-pitcher.jpg',
+    badge: 'Limited Run № 01',
   },
   {
-    id: 'linen-throw',
-    category: 'Textiles',
-    title: 'Washed Meadow Linen',
-    origin: '100% Organic Flax',
-    tag: 'Pure Linen',
+    id: 'prod-02',
+    name: 'Washed Normandy Linen Throw',
+    category: 'Slow Textiles',
+    tag: 'Organic Flax',
     tagColor: 'moss',
-    price: '$64.00',
-    icon: '🌿',
-    badge: 'Artisan Loom',
-    offsetClass: 'top-20 sm:top-24 -right-1 sm:-right-4 z-20',
-    rotate: 'rotate-1',
+    price: '₹2,400',
+    origin: 'Hand-dyed with botanical indigo',
+    image: '/assets/images/products/linen-throw.jpg',
+    badge: 'Heirloom Curation',
   },
   {
-    id: 'cedar-candle',
-    category: 'Apothecary',
-    title: 'Wild Moss & Cedar Candle',
-    origin: 'Slow-poured Botanical Wax',
-    tag: 'Signature Scent',
+    id: 'prod-05',
+    name: 'Wild Moss & Cedar Botanical Candle',
+    category: 'Artisan Apothecary',
+    tag: 'Pure Beeswax',
     tagColor: 'brass',
-    price: '$26.00',
-    icon: '🕯️',
-    badge: '45h Burn',
-    offsetClass: 'bottom-2 left-4 sm:left-8 z-10',
-    rotate: '-rotate-1',
+    price: '₹850',
+    origin: 'Infused with Big Sur cedarwood',
+    image: '/assets/images/products/botanical-candle.jpg',
+    badge: 'Seasonal Harvest',
+  },
+  {
+    id: 'prod-04',
+    name: 'Hand-Carved Olive Wood Bowl',
+    category: 'Handcrafted Wood',
+    tag: 'Ancient Olive',
+    tagColor: 'clay',
+    price: '₹1,250',
+    origin: 'Conditioned with walnut oil',
+    image: '/assets/images/products/olive-bowl.jpg',
+    badge: 'Natural Grain',
   },
 ];
 
@@ -107,6 +112,8 @@ const SHELF_ITEMS = [
  */
 export function Hero({ onExploreClick, onAskClick, className }) {
   const shouldReduceMotion = useReducedMotion();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const selectedShowcase = HERO_SHOWCASE_ITEMS[selectedIndex] || HERO_SHOWCASE_ITEMS[0];
 
   // Animation variants
   const containerVariants = {
@@ -152,15 +159,6 @@ export function Hero({ onExploreClick, onAskClick, className }) {
       },
     },
   };
-
-  const floatTransition = shouldReduceMotion
-    ? {}
-    : {
-        duration: 5,
-        repeat: Infinity,
-        repeatType: 'reverse',
-        ease: 'easeInOut',
-      };
 
   return (
     <section
@@ -257,117 +255,115 @@ export function Hero({ onExploreClick, onAskClick, className }) {
             </motion.div>
           </div>
 
-          {/* Right Column: Tactile Curated Shelf & Gift-Tag Arrangement Visual */}
+          {/* Right Column: Tactile Curated Artisan Masterpiece Showcase */}
           <motion.div
             variants={visualVariants}
-            className="lg:col-span-5 relative flex items-center justify-center pt-4 lg:pt-0"
+            className="lg:col-span-5 relative flex items-center justify-center pt-2 lg:pt-0"
           >
             {/* Visual Frame Container */}
-            <div className="relative w-full max-w-md lg:max-w-none aspect-4/3 sm:aspect-5/4 p-4 sm:p-6 rounded-parcel bg-cloud/70 border border-ink/10 shadow-parcel overflow-hidden">
+            <div className="relative w-full max-w-md lg:max-w-none rounded-parcel bg-cloud/90 border border-ink/15 shadow-parcel hover:shadow-parcel-hover transition-all duration-300 p-4 sm:p-5 overflow-hidden group">
               
-              {/* Subtle Textured Background Elements */}
+              {/* Subtle Textured Background Grid */}
               <div
                 aria-hidden="true"
-                className="absolute inset-0 bg-[radial-gradient(var(--color-ink)_1px,transparent_1px)] [background-size:16px_16px] opacity-[0.035] pointer-events-none"
+                className="absolute inset-0 bg-[radial-gradient(var(--color-ink)_1px,transparent_1px)] [background-size:16px_16px] opacity-[0.03] pointer-events-none"
               />
 
-              {/* Artisan Studio Stamp Motif (Top Right) */}
-              <div
-                aria-hidden="true"
-                className="absolute top-3 right-3 sm:top-4 sm:right-4 z-0 pointer-events-none opacity-40 select-none rotate-6"
-              >
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-dashed border-ink/30 flex flex-col items-center justify-center text-center p-1 font-utility">
-                  <span className="text-[7px] sm:text-[8px] uppercase tracking-widest text-ink/60 leading-tight">Artisan</span>
-                  <span className="text-[9px] sm:text-[10px] font-bold text-ink/80">CURATED</span>
-                  <span className="text-[7px] sm:text-[8px] text-ink/60">№ 2019</span>
+              {/* Main Featured Photo Area */}
+              <div className="relative w-full aspect-4/3 sm:aspect-16/11 rounded-parcel overflow-hidden bg-paper/60 border border-ink/10 mb-4 shadow-inner">
+                <img
+                  src={selectedShowcase.image}
+                  alt={selectedShowcase.name}
+                  className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                  loading="eager"
+                  decoding="async"
+                />
+
+                {/* Top-Left Category & Signature Tag */}
+                <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5">
+                  <Tag
+                    color={selectedShowcase.tagColor}
+                    size="sm"
+                    variant="solid"
+                    shape="tag"
+                    hasHole={true}
+                    className="text-[10px] py-0.5 tracking-wide shadow-sm"
+                  >
+                    {selectedShowcase.tag}
+                  </Tag>
+                </div>
+
+                {/* Top-Right Price Label in Space Mono */}
+                <div className="absolute top-3 right-3 z-10">
+                  <Tag
+                    color="paper"
+                    size="sm"
+                    variant="solid"
+                    shape="pill"
+                    hasHole={false}
+                    className="font-utility font-bold text-ink text-xs border border-ink/20 shadow-sm px-2.5 py-0.5"
+                  >
+                    {selectedShowcase.price}
+                  </Tag>
+                </div>
+
+                {/* Bottom Overlay Info Tag */}
+                <div className="absolute bottom-3 left-3 right-3 z-10 bg-cloud/90 backdrop-blur-md px-3 py-2 rounded-tag border border-ink/15 flex items-center justify-between">
+                  <div className="min-w-0 pr-2">
+                    <h3 className="font-display font-medium text-xs sm:text-sm text-ink truncate leading-tight">
+                      {selectedShowcase.name}
+                    </h3>
+                    <p className="text-[10px] font-utility text-ink/65 truncate mt-0.5">
+                      {selectedShowcase.origin}
+                    </p>
+                  </div>
+                  <span className="text-[10px] font-utility text-brass-dark font-semibold shrink-0 bg-brass/15 px-1.5 py-0.5 rounded border border-brass/25">
+                    {selectedShowcase.badge}
+                  </span>
                 </div>
               </div>
 
-              {/* Wooden Shelf Baseline Indicator */}
-              <div
-                aria-hidden="true"
-                className="absolute bottom-6 left-6 right-6 h-1.5 bg-ink/15 rounded-full border-t border-ink/20 shadow-xs"
-              />
+              {/* Interactive Thumbnail Selector Tray */}
+              <div className="pt-1">
+                <div className="flex items-center justify-between text-[11px] font-utility text-ink/60 mb-2 px-0.5">
+                  <span className="uppercase tracking-wider">Curated Wares</span>
+                  <span className="text-[10px] italic">Tap to preview</span>
+                </div>
 
-              {/* Curated Floating Shelf Items with Layered Gift-Tags */}
-              <div className="relative w-full h-full min-h-[280px] sm:min-h-[320px]">
-                {SHELF_ITEMS.map((item, index) => (
-                  <motion.div
-                    key={item.id}
-                    animate={
-                      shouldReduceMotion
-                        ? {}
-                        : {
-                            y: index === 1 ? [-4, 4, -4] : index === 0 ? [3, -3, 3] : [-2, 3, -2],
-                          }
-                    }
-                    transition={{
-                      ...floatTransition,
-                      delay: index * 0.8,
-                    }}
-                    className={cn(
-                      'absolute w-[82%] sm:w-[78%] transition-transform duration-300 hover:scale-[1.02] hover:z-30',
-                      item.offsetClass,
-                      item.rotate
-                    )}
-                  >
-                    {/* Item Card with Tactile Parcel Surface */}
-                    <div className="bg-paper/95 backdrop-blur-xs rounded-parcel border border-ink/15 p-3.5 sm:p-4 shadow-parcel-hover hover:shadow-lg transition-shadow">
-                      
-                      {/* Top Header: Category & Signature Tag */}
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <Tag
-                          color={item.tagColor}
-                          size="sm"
-                          variant="solid"
-                          shape="tag"
-                          hasHole={true}
-                          className="text-[10px] py-0.5"
-                        >
-                          {item.tag}
-                        </Tag>
-
-                        <span className="text-xs font-utility font-semibold text-ink/90 bg-cloud/90 px-2 py-0.5 rounded border border-ink/10">
-                          {item.price}
-                        </span>
-                      </div>
-
-                      {/* Content Row: Icon + Title + Origin */}
-                      <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-tag bg-cloud flex items-center justify-center text-xl shrink-0 border border-ink/10 shadow-xs">
-                          {item.icon}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <h2 className="text-sm sm:text-base font-display font-medium text-ink truncate leading-tight">
-                            {item.title}
-                          </h2>
-                          <p className="text-[11px] sm:text-xs font-utility text-ink/60 truncate mt-0.5">
-                            {item.origin}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Card Footer: Subtle Punch Tag Accent */}
-                      <div className="mt-2.5 pt-2 border-t border-ink/10 flex items-center justify-between text-[10px] font-utility text-ink/50">
-                        <span className="flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-moss/70" />
-                          {item.badge}
-                        </span>
-                        <span className="italic">UrbanNest Exclusive</span>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
+                <div className="grid grid-cols-4 gap-2">
+                  {HERO_SHOWCASE_ITEMS.map((item, idx) => {
+                    const isSelected = selectedIndex === idx;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => setSelectedIndex(idx)}
+                        className={cn(
+                          'relative aspect-square rounded-tag overflow-hidden border transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss',
+                          isSelected
+                            ? 'border-moss ring-2 ring-moss/30 scale-100 shadow-sm'
+                            : 'border-ink/15 opacity-70 hover:opacity-100 hover:border-ink/40'
+                        )}
+                        aria-label={`Preview ${item.name}`}
+                      >
+                        <img
+                          src={item.image}
+                          alt=""
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                        {isSelected && (
+                          <span
+                            aria-hidden="true"
+                            className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-moss border border-cloud"
+                          />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
-              {/* Bottom Decorative Ribbon & Needle Accent */}
-              <div
-                aria-hidden="true"
-                className="absolute bottom-2 right-4 flex items-center gap-1 text-[10px] font-utility text-ink/40"
-              >
-                <Package className="w-3 h-3 text-clay/70" />
-                <span>Crafted in small batches</span>
-              </div>
             </div>
           </motion.div>
         </div>

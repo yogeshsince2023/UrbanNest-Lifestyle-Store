@@ -436,7 +436,7 @@ export function QueryForm({ initialValues, onSuccess, className }) {
             className="w-full bg-paper border border-ink/15 rounded-tag py-2.5 px-3 text-xs font-utility text-ink transition-colors focus:outline-none focus:ring-2 focus:ring-moss disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
           >
             {INQUIRY_CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>
+              <option key={cat} value={cat} className="bg-paper text-ink">
                 {cat}
               </option>
             ))}

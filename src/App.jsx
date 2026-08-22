@@ -5,6 +5,7 @@ import { Navbar, Footer } from './components/layout';
 import { CartDrawer } from './components/commerce';
 import { ChatbotWidget } from './components/chat';
 import { WhatsAppButton } from './components/common';
+import { InquiryModal } from './components/forms';
 import { CartProvider } from './context/CartContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { useCart } from './hooks';
@@ -32,6 +33,7 @@ function ScrollToTop() {
 function StoreApp() {
   const { totalCount, openDrawer } = useCart();
   const navigate = useNavigate();
+  const [isAskModalOpen, setIsAskModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
   const [inquiryState, setInquiryState] = useState({
     name: '',
@@ -74,7 +76,7 @@ function StoreApp() {
         fontSize: '12px',
       },
     });
-    navigate('/contact');
+    setIsAskModalOpen(true);
   };
 
   return (
@@ -84,9 +86,25 @@ function StoreApp() {
       <Navbar
         cartCount={totalCount}
         onCartClick={openDrawer}
+        onAskClick={() => setIsAskModalOpen(true)}
       />
 
       <CartDrawer onInquireOrder={handleOrderInquiry} />
+
+      <InquiryModal
+        isOpen={isAskModalOpen}
+        onClose={() => setIsAskModalOpen(false)}
+        initialValues={inquiryState}
+        onSuccess={() => {
+          setInquiryState({
+            name: '',
+            email: '',
+            phone: '',
+            category: 'General Question',
+            message: '',
+          });
+        }}
+      />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
         <Routes>
@@ -95,7 +113,7 @@ function StoreApp() {
             element={
               <HomePage
                 onExploreClick={() => navigate('/shop')}
-                onAskClick={() => navigate('/contact')}
+                onAskClick={() => setIsAskModalOpen(true)}
                 onClaimOffer={(cat) => {
                   setActiveCategory(cat);
                   navigate('/shop');
@@ -117,7 +135,7 @@ function StoreApp() {
             element={
               <AboutPage
                 onExploreClick={() => navigate('/shop')}
-                onContactClick={() => navigate('/contact')}
+                onContactClick={() => setIsAskModalOpen(true)}
               />
             }
           />

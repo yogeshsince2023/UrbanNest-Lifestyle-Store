@@ -117,6 +117,25 @@
       ]
     }
     </script>
+
+    <!-- Instant theme initialization based on device or saved preference -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('urbannest_lifestyle_theme');
+          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.documentElement.style.colorScheme = 'dark';
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.documentElement.style.colorScheme = 'light';
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body class="bg-paper text-ink selection:bg-moss/20 selection:text-ink antialiased">
     <div id="root"></div>

@@ -6,11 +6,11 @@ import { StoreLocation, ContactSection } from '../components/sections';
 export default function ContactPage({ initialInquiryValues, onInquirySuccess }) {
   return (
     <>
-      <StoreLocation />
       <ContactSection
         initialInquiryValues={initialInquiryValues}
         onInquirySuccess={onInquirySuccess}
       />
+      <StoreLocation />
     </>
   );
 }

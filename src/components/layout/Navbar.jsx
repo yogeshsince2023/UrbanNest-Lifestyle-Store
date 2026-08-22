@@ -36,7 +36,7 @@ const NAV_LINKS = [
  * @param {Function} [props.onCartClick] - Cart icon click handler
  * @param {Function} [props.onThemeToggle] - Theme toggle callback
  */
-export function Navbar({ cartCount = 0, onCartClick, onThemeToggle }) {
+export function Navbar({ cartCount = 0, onCartClick, onAskClick, onThemeToggle }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { theme, isDark, toggleTheme } = useTheme();
@@ -158,15 +158,22 @@ export function Navbar({ cartCount = 0, onCartClick, onThemeToggle }) {
             {/* 3. Action Hub: CTA Button, Cart Badge & Theme Switcher */}
             <div className="flex items-center gap-2 sm:gap-3">
               
-              {/* Primary CTA: Ask Us Anything */}
+              {/* Primary CTA: Ask Us Anything (Opens Instant Inquiry Modal or Navigates) */}
               <div className="hidden lg:inline-flex">
                 <Button
                   variant="primary"
                   color="moss"
                   size="sm"
                   leftIcon={<MessageCircle className="w-3.5 h-3.5" />}
-                  onClick={(e) => handleNavClick(e, '/contact')}
-                  aria-label="Ask Us Anything — Go to inquiry form"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (onAskClick) {
+                      onAskClick();
+                    } else {
+                      handleNavClick(e, '/contact');
+                    }
+                  }}
+                  aria-label="Ask Us Anything — Open inquiry form"
                 >
                   Ask Us Anything
                 </Button>
@@ -324,7 +331,14 @@ export function Navbar({ cartCount = 0, onCartClick, onThemeToggle }) {
                   size="md"
                   className="w-full justify-center"
                   leftIcon={<MessageCircle className="w-4 h-4" />}
-                  onClick={(e) => handleNavClick(e, '/contact')}
+                  onClick={(e) => {
+                    setIsMobileMenuOpen(false);
+                    if (onAskClick) {
+                      onAskClick();
+                    } else {
+                      handleNavClick(e, '/contact');
+                    }
+                  }}
                 >
                   Ask Us Anything
                 </Button>

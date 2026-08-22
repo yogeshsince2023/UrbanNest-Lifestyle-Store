@@ -146,3 +146,100 @@
   --chat--message--user--color: #F7F5EF;
 }
 
+/* Deep @n8n/chat Element Customization for UrbanNest Theme */
+#n8n-chat-root .chat-window {
+  border: 1px solid var(--color-ink, rgba(38, 38, 31, 0.15)) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.35) !important;
+  overflow: hidden !important;
+  font-family: var(--font-body, system-ui, sans-serif) !important;
+}
+
+#n8n-chat-root .chat-header {
+  background-color: var(--color-paper, #EDEAE1) !important;
+  color: var(--color-ink, #26261F) !important;
+  border-bottom: 1px solid var(--color-ink, rgba(38, 38, 31, 0.1)) !important;
+}
+
+#n8n-chat-root .chat-header h1,
+#n8n-chat-root .chat-header .title {
+  font-family: var(--font-display, Georgia, serif) !important;
+  font-weight: 600 !important;
+  color: var(--color-ink, #26261F) !important;
+}
+
+#n8n-chat-root .chat-header .subtitle,
+#n8n-chat-root .chat-header p {
+  color: var(--color-ink, #26261F) !important;
+  opacity: 0.75 !important;
+}
+
+#n8n-chat-root .chat-body,
+#n8n-chat-root .chat-layout {
+  background-color: var(--color-cloud, #F7F5EF) !important;
+}
+
+/* Chat Input Bar - Explicit high contrast in both themes */
+#n8n-chat-root .chat-inputs,
+#n8n-chat-root .chat-footer,
+#n8n-chat-root form {
+  background-color: var(--color-paper, #EDEAE1) !important;
+  border-top: 1px solid var(--color-ink, rgba(38, 38, 31, 0.12)) !important;
+}
+
+#n8n-chat-root textarea,
+#n8n-chat-root input[type="text"],
+#n8n-chat-root .chat-input {
+  background-color: var(--color-cloud, #F7F5EF) !important;
+  color: var(--color-ink, #26261F) !important;
+  border: 1px solid var(--color-ink, rgba(38, 38, 31, 0.2)) !important;
+  border-radius: 8px !important;
+  font-family: var(--font-body, system-ui, sans-serif) !important;
+  font-size: 13px !important;
+  padding: 8px 12px !important;
+}
+
+#n8n-chat-root textarea::placeholder,
+#n8n-chat-root input::placeholder {
+  color: var(--color-ink, #26261F) !important;
+  opacity: 0.55 !important;
+}
+
+/* Dark mode specific text area overrides */
+.dark #n8n-chat-root textarea,
+.dark #n8n-chat-root input[type="text"],
+[data-theme="dark"] #n8n-chat-root textarea,
+[data-theme="dark"] #n8n-chat-root input[type="text"] {
+  background-color: #24211E !important;
+  color: #EDE8DF !important;
+  border-color: rgba(237, 232, 223, 0.25) !important;
+}
+
+.dark #n8n-chat-root textarea::placeholder,
+.dark #n8n-chat-root input::placeholder,
+[data-theme="dark"] #n8n-chat-root textarea::placeholder,
+[data-theme="dark"] #n8n-chat-root input::placeholder {
+  color: rgba(237, 232, 223, 0.55) !important;
+}
+
+#n8n-chat-root button[type="submit"],
+#n8n-chat-root .chat-send-btn,
+#n8n-chat-root .send-button {
+  background-color: var(--color-moss, #5C6B4F) !important;
+  color: #F7F5EF !important;
+  border-radius: 8px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+#n8n-chat-root button[type="submit"] svg,
+#n8n-chat-root .chat-send-btn svg,
+#n8n-chat-root .send-button svg {
+  color: #F7F5EF !important;
+  fill: #F7F5EF !important;
+}
+
+#n8n-chat-root button[type="submit"]:hover {
+  background-color: var(--color-moss-dark, #45513A) !important;
+}
+
+
