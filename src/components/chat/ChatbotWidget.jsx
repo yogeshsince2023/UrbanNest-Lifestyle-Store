@@ -57,7 +57,7 @@ export function ChatbotWidget({ className }) {
       createChat({
         webhookUrl,
         target: '#n8n-chat-root',
-        mode: 'window',
+        mode: 'fullscreen',
         showWelcomeScreen: true,
         defaultLanguage: 'en',
         initialMessages: [
@@ -123,15 +123,6 @@ export function ChatbotWidget({ className }) {
   const handleOpenChat = () => {
     setShowGreeting(false);
     setIsOpen((prev) => !prev);
-
-    // Trigger the N8N chat toggle inside the chat root
-    const rootEl = document.getElementById('n8n-chat-root');
-    const n8nBtn =
-      rootEl?.querySelector('button') ||
-      document.querySelector('.n8n-chat-toggle, .chat-window-toggle, .chat-toggle');
-    if (n8nBtn) {
-      n8nBtn.click();
-    }
   };
 
 
@@ -149,8 +140,25 @@ export function ChatbotWidget({ className }) {
       )}
       aria-label="Artisan Concierge Chat Widget"
     >
-      {/* Target Mount for @n8n/chat UI */}
-      <div id="n8n-chat-root" className="pointer-events-auto" />
+      {/* Custom Popup Window Container wrapping n8n fullscreen mode */}
+      <div
+        className={cn(
+          "absolute bottom-16 right-0 w-[380px] h-[580px] max-h-[80vh] max-w-[calc(100vw-3rem)] rounded-[14px] overflow-hidden shadow-2xl border border-ink/15 transition-all duration-300 origin-bottom-right z-50 bg-paper",
+          isOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"
+        )}
+      >
+        {/* Custom Close Button for the Popup */}
+        <button
+          onClick={() => setIsOpen(false)}
+          className="absolute top-4 right-4 z-[9999] p-1.5 bg-paper/80 hover:bg-cloud backdrop-blur-sm rounded-full text-ink/70 hover:text-ink shadow-sm transition-colors border border-ink/10"
+          aria-label="Close Chat"
+        >
+          <X className="w-4 h-4" />
+        </button>
+        
+        {/* Target Mount for @n8n/chat UI (Fullscreen mode fills this container) */}
+        <div id="n8n-chat-root" className="w-full h-full" />
+      </div>
 
       {/* Proactive Greeting Bubble */}
       <AnimatePresence>

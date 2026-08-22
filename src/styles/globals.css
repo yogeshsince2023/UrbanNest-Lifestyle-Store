@@ -242,18 +242,18 @@
   background-color: var(--color-moss-dark, #45513A) !important;
 }
 
-/* Hide default n8n chat toggle button to prevent overlap with our custom Concierge AI button */
+/* Hide default n8n chat toggle button visually, but keep it in DOM to allow JS .click() */
 .chat-window-toggle,
 .chat-toggle,
 .n8n-chat-toggle,
 #n8n-chat-root > button {
-  opacity: 0 !important;
-  width: 0 !important;
-  height: 0 !important;
-  overflow: hidden !important;
   position: absolute !important;
-  z-index: -999 !important;
-  margin: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
   padding: 0 !important;
-  border: none !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border-width: 0 !important;
 }
