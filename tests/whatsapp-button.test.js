@@ -9,7 +9,7 @@ import {
 
 const workspaceRoot = process.cwd();
 
-console.log('🧪 Starting Step 15 WhatsApp Quick-Contact verification suite...');
+console.log('🧪 Starting WhatsApp Quick-Contact verification suite...');
 
 // 1. Verify WhatsAppButton.jsx exists and is exported
 const whatsappPath = path.join(workspaceRoot, 'src', 'components', 'common', 'WhatsAppButton.jsx');
@@ -65,4 +65,4 @@ const appPath = path.join(workspaceRoot, 'src', 'App.jsx');
 const appContent = fs.readFileSync(appPath, 'utf8');
 assert(appContent.includes('WhatsAppButton'), 'App.jsx must render WhatsAppButton');
 
-console.log('✅ All Step 15 WhatsApp Quick-Contact assertions passed successfully!');
+console.log('✅ All WhatsApp Quick-Contact assertions passed successfully!');

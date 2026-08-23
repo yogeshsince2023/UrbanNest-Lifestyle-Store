@@ -81,15 +81,10 @@ const ARTISAN_VALUES = [
 ];
 
 /**
- * AboutShop Component — Brand Story Section
- *
- * Implements Step 5 requirements:
- * - A founder-style narrative on why UrbanNest exists (point of view & philosophy)
- * - What it sells woven into the narrative (home décor, gifts, stationery, lifestyle accessories, small household products)
- * - Differentiation against big retail chains (personal curation, local, quality over quantity)
- * - 3–4 stat counters styled as tactile gift-tag labels
- * - Two-column responsive layout (visual + narrative) with standard scroll-reveal entrance
- * - Strict a11y & reduced motion compliance
+ * Brand story and studio philosophy:
+ * - Narrative on slow living and small-batch craftsmanship
+ * - Overview of home décor, ceramics, linens, and apothecary
+ * - Tactile brand statistics and artisan maker highlights
  *
  * @param {Object} props
  * @param {Function} [props.onExploreClick] - Optional explore products handler

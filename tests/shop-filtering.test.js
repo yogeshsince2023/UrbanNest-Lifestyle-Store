@@ -4,7 +4,7 @@ import assert from 'assert';
 
 const workspaceRoot = process.cwd();
 
-console.log('🧪 Starting Step 6 Product Data & Filtering verification suite...');
+console.log('🧪 Starting Product Data & Filtering verification suite...');
 
 // 1. Load products.json
 const productsPath = path.join(workspaceRoot, 'src', 'data', 'products.json');
@@ -115,4 +115,4 @@ const sectionsIndexPath = path.join(workspaceRoot, 'src', 'components', 'section
 const sectionsIndexContent = fs.readFileSync(sectionsIndexPath, 'utf8');
 assert(sectionsIndexContent.includes('ShopSection'), 'sections/index.js must export ShopSection');
 
-console.log('✅ All Step 6 Product browsing assertions passed successfully!');
+console.log('✅ All Product browsing assertions passed successfully!');

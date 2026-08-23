@@ -33,12 +33,11 @@ const STORE_HOURS = [
 /**
  * StoreLocation Component
  *
- * Implements Step 11 physical location requirements:
- * - Embedded Google Map iframe (no API key required)
- * - Fictional but plausible Marin County studio address
+ * Features:
+ * - Embedded Google Map iframe
+ * - Studio address & coordinates
  * - Structured store operating hours
- * - "Get Directions" link opening Google Maps in a new tab
- * - System-styled parcel card frames with coordinate labels
+ * - Directions link opening Google Maps in a new tab
  *
  * @param {Object} props
  * @param {string} [props.className] - Additional wrapper class names

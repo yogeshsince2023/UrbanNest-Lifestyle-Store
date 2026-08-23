@@ -9,7 +9,7 @@ import productsData from '../src/data/products.json' with { type: 'json' };
 
 const workspaceRoot = process.cwd();
 
-console.log('🧪 Starting Step 16 AI Recommendations verification suite...');
+console.log('🧪 Starting AI Recommendations verification suite...');
 
 // 1. Verify calculateJaccardSimilarity mathematical correctness
 const testA = ['ceramics', 'stoneware', 'tableware'];
@@ -105,4 +105,4 @@ const cartDrawerPath = path.join(workspaceRoot, 'src', 'components', 'commerce',
 const cartDrawerContent = fs.readFileSync(cartDrawerPath, 'utf8');
 assert(cartDrawerContent.includes('Recommendations'), 'CartDrawer.jsx must mount drawer Recommendations');
 
-console.log('✅ All Step 16 AI Recommendations assertions passed successfully!');
+console.log('✅ All AI Recommendations assertions passed successfully!');

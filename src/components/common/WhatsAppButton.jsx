@@ -34,15 +34,12 @@ function WhatsAppIcon({ className = 'w-5 h-5' }) {
     </svg>
   );
 }
-
 /**
  * WhatsAppButton Component
- *
- * Implements Step 15 requirements:
- * - Floating WhatsApp-green (#25D366) icon button
- * - Pre-filled chat link opening in a new tab (wa.me)
- * - Positioned at bottom-left (fixed bottom-6 left-6) clear of the bottom-right chatbot launcher
- * - Accessible label, responsive expand on hover/focus, and online indicator badge
+ * Features:
+ * - Floating WhatsApp quick messaging button
+ * - Pre-filled chat link opening directly in WhatsApp (wa.me)
+ * - Accessible label and online indicator badge
  *
  * @param {Object} props
  * @param {string} [props.phoneNumber=DEFAULT_WHATSAPP_PHONE] - WhatsApp phone number with country code

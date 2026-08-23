@@ -26,14 +26,10 @@ import { cn } from '../../utils/cn';
 function formatRupees(amount) {
   return `₹${(amount || 0).toLocaleString('en-IN')}`;
 }
-
 /**
- * CartDrawer Component
- *
- * Implements Step 7 slide-in cart drawer:
+ * Slide-in cart drawer:
  * - Slide-in panel from the right with backdrop overlay
  * - Real-time item listing with quantity steppers and subtotal
- * - Tactile design language with gift-tag motifs
  * - "Submit Order Inquiry" action which pre-fills the inquiry form with itemized cart summary
  *
  * @param {Object} props

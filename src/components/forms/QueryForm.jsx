@@ -21,7 +21,7 @@ import { cn } from '../../utils/cn';
 /**
  * QueryForm Component
  *
- * Implements Step 13 requirements:
+ * Features:
  * - Real N8N webhook integration via POST JSON
  * - Fields: Name (required), Email (required + format validated), Phone (optional),
  *   Category dropdown, Query/Message (required textarea)

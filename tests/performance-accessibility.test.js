@@ -4,7 +4,7 @@ import assert from 'assert';
 
 const workspaceRoot = process.cwd();
 
-console.log('🧪 Starting Step 20 Performance & Accessibility verification suite...');
+console.log('🧪 Starting Performance & Accessibility verification suite...');
 
 // 1. Verify Keyboard Navigation & Escape Dismissal Listeners
 const cartDrawerContent = fs.readFileSync(path.join(workspaceRoot, 'src', 'components', 'commerce', 'CartDrawer.jsx'), 'utf8');
@@ -74,4 +74,4 @@ assert(
 console.log('✓ Form accessibility (labels, aria-required, inline alerts) verified');
 
 
-console.log('✅ All Step 20 Performance & Accessibility assertions passed successfully!');
+console.log('✅ All Performance & Accessibility assertions passed successfully!');

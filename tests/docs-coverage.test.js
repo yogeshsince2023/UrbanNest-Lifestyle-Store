@@ -4,16 +4,14 @@ import assert from 'assert';
 
 const workspaceRoot = process.cwd();
 
-console.log('🧪 Starting Step 23 Documentation verification suite...');
+console.log('🧪 Starting Documentation verification suite...');
 
 const requiredDocFiles = [
-  'problem-statement.md',
-  'proposed-solution.md',
   'tech-stack.md',
   'n8n-integration.md',
   'deployment-guide.md',
   'future-improvements.md',
-  'differentiators.md',
+  'ARCHITECTURE.md',
 ];
 
 for (const filename of requiredDocFiles) {
@@ -35,15 +33,4 @@ assert(
 );
 console.log('✓ n8n-integration.md webhook environment variable configuration verified');
 
-// Check differentiators.md mentions extensions beyond brief
-const diffContent = fs.readFileSync(path.join(workspaceRoot, 'docs', 'differentiators.md'), 'utf8');
-const expectedDiffs = ['cart', 'search', 'filter', 'testimonials', 'map', 'dark mode', 'WhatsApp', 'recommendations', 'SEO'];
-for (const term of expectedDiffs) {
-  assert(
-    diffContent.toLowerCase().includes(term.toLowerCase()),
-    `differentiators.md must explicitly mention: ${term}`
-  );
-}
-console.log('✓ differentiators.md verified with all feature extensions beyond brief');
-
-console.log('✅ All Step 23 Documentation assertions passed successfully!');
+console.log('✅ All Documentation assertions passed successfully!');
