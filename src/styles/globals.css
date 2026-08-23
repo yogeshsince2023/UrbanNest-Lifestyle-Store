@@ -34,7 +34,7 @@
     background: var(--color-brass-dark, #A88A38);
   }
 
-  /* Accessibility Floor: Visible Keyboard Focus Rings in Moss */
+  /* Accessibility Floor: Visible Keyboard Focus Rings */
   :focus-visible {
     outline: var(--focus-ring-width) solid var(--focus-ring-color) !important;
     outline-offset: var(--focus-ring-offset) !important;
@@ -43,7 +43,6 @@
   /* Global Headings */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-feature-settings: "soft" 100;
   }
 
   /* Utility & Price Labels */
@@ -318,7 +317,7 @@
   padding: 0 !important;
   margin: -1px !important;
   overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
   white-space: nowrap !important;
   border-width: 0 !important;
 }
