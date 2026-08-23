@@ -1,59 +1,40 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, Sparkles, X, Bot, ArrowRight } from 'lucide-react';
-import '@n8n/chat/style.css';
-import { createChat } from '@n8n/chat';
 import { cn } from '../../utils/cn';
 
-// =============================================================================
-// N8N WEBHOOK CONFIGURATION:
-// Paste your live N8N Chat Trigger Webhook URL below:
-// Current active endpoint: https://soham6050.app.n8n.cloud/webhook/a35826c3-52aa-487c-a499-7da1565c630b/chat
-// =============================================================================
 export const DEFAULT_CHATBOT_WEBHOOK_URL =
   'https://soham6050.app.n8n.cloud/webhook/a35826c3-52aa-487c-a499-7da1565c630b/chat';
-
-// =============================================================================
-// FALLBACK & TROUBLESHOOTING CHECKLIST:
-// If the chatbot widget fails to load, connect, or stream responses:
-// 1. Check Script / Content-Security-Policy: Ensure external connections to app.n8n.cloud are allowed.
-// 2. N8N Workflow Active State: Verify the N8N workflow toggle is switched to 'Active' (Production).
-// 3. Webhook URL: Confirm the endpoint URL ends in /chat and matches your N8N Chat Trigger node.
-// 4. CORS Headers: Verify that the N8N Chat Trigger has 'Allowed Origins' set to '*' or 'http://localhost:5173'.
-// 5. Network / Browser Adblocker: Some aggressive privacy extensions block websocket/webhook chat traffic.
-// =============================================================================
 
 const PROACTIVE_STORAGE_KEY = 'urbannest_proactive_chat_v1';
 
 /**
  * ChatbotWidget Component
- *
- * Implements Step 14 requirements:
- * - Official @n8n/chat package integration with createChat()
- * - Configured with import.meta.env.VITE_N8N_CHATBOT_URL
- * - Themed in Moss (#5C6B4F), Work Sans font, and warm parcel surfaces
- * - Floating launcher in the bottom-right with gift-tag eyelet styling
- * - 4-5s proactive greeting bubble (once per session)
- * - Safe layout offset from WhatsApp button (Step 15)
- *
- * @param {Object} props
- * @param {string} [props.className] - Additional wrapper class names
+ * Performance-optimized: `@n8n/chat` is loaded dynamically ONLY when opened.
  */
 export function ChatbotWidget({ className }) {
   const [isOpen, setIsOpen] = useState(false);
   const [showGreeting, setShowGreeting] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(false);
   const chatInitializedRef = useRef(false);
   const containerRef = useRef(null);
 
   const webhookUrl =
     import.meta.env.VITE_N8N_CHATBOT_URL || DEFAULT_CHATBOT_WEBHOOK_URL;
 
-  // 1. Initialize @n8n/chat instance on mount
-  useEffect(() => {
+  // Dynamically load and initialize @n8n/chat on-demand when chat is opened
+  const initChatOnDemand = async () => {
     if (chatInitializedRef.current) return;
     chatInitializedRef.current = true;
+    setIsInitializing(true);
 
     try {
+      // Dynamic imports prevent 1.5MB library from blocking initial page render
+      const [{ createChat }] = await Promise.all([
+        import('@n8n/chat'),
+        import('@n8n/chat/style.css'),
+      ]);
+
       createChat({
         webhookUrl,
         target: '#n8n-chat-root',
@@ -76,10 +57,12 @@ export function ChatbotWidget({ className }) {
       });
     } catch (err) {
       console.warn('[N8N Chatbot Init Notice]: Fallback container active.', err);
+    } finally {
+      setIsInitializing(false);
     }
-  }, [webhookUrl]);
+  };
 
-  // 2. Proactive Greeting Bubble Trigger (once per session after ~4.5 seconds)
+  // Proactive Greeting Bubble Trigger (once per session after ~5s)
   useEffect(() => {
     let timerId;
     try {
@@ -88,7 +71,7 @@ export function ChatbotWidget({ className }) {
         timerId = setTimeout(() => {
           setShowGreeting(true);
           sessionStorage.setItem(PROACTIVE_STORAGE_KEY, 'true');
-        }, 4500);
+        }, 5000);
       }
     } catch {
       // Session storage blocked
@@ -99,7 +82,7 @@ export function ChatbotWidget({ className }) {
     };
   }, [isOpen]);
 
-  // 3. Dismiss greeting and close chat on Escape key press
+  // Dismiss greeting and close chat on Escape key press
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -118,13 +101,17 @@ export function ChatbotWidget({ className }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showGreeting, isOpen]);
 
-
   // Open the N8N chat window programmatically
   const handleOpenChat = () => {
     setShowGreeting(false);
-    setIsOpen((prev) => !prev);
+    setIsOpen((prev) => {
+      const next = !prev;
+      if (next && !chatInitializedRef.current) {
+        initChatOnDemand();
+      }
+      return next;
+    });
   };
-
 
   const handleDismissGreeting = (e) => {
     e.stopPropagation();
@@ -143,21 +130,30 @@ export function ChatbotWidget({ className }) {
       {/* Custom Popup Window Container wrapping n8n fullscreen mode */}
       <div
         className={cn(
-          "absolute bottom-16 right-0 w-[380px] h-[580px] max-h-[80vh] max-w-[calc(100vw-3rem)] rounded-[14px] overflow-hidden shadow-2xl border border-ink/15 transition-all duration-300 origin-bottom-right z-50 bg-paper",
+          "absolute bottom-16 right-0 w-[380px] h-[580px] max-h-[80vh] max-w-[calc(100vw-3rem)] rounded-[14px] overflow-hidden shadow-2xl border border-ink/15 transition-all duration-300 origin-bottom-right z-50 bg-[var(--color-paper)]",
           isOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"
         )}
       >
         {/* Custom Close Button for the Popup */}
         <button
           onClick={() => setIsOpen(false)}
-          className="absolute top-4 right-4 z-[9999] p-1.5 bg-paper/80 hover:bg-cloud backdrop-blur-sm rounded-full text-ink/70 hover:text-ink shadow-sm transition-colors border border-ink/10"
+          className="absolute top-4 right-4 z-[9999] p-1.5 bg-paper/80 hover:bg-cloud backdrop-blur-sm rounded-full text-ink/70 hover:text-ink shadow-sm transition-colors border border-ink/10 cursor-pointer"
           aria-label="Close Chat"
         >
           <X className="w-4 h-4" />
         </button>
         
-        {/* Target Mount for @n8n/chat UI (Fullscreen mode fills this container) */}
-        <div id="n8n-chat-root" className="w-full h-full" />
+        {/* Target Mount for @n8n/chat UI */}
+        <div id="n8n-chat-root" className="w-full h-full relative">
+          {isInitializing && (
+            <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-paper)] z-10">
+              <div className="text-center space-y-2">
+                <div className="w-8 h-8 border-2 border-moss border-t-transparent rounded-full animate-spin mx-auto" />
+                <p className="font-utility text-xs text-ink/70">Connecting to Concierge...</p>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Proactive Greeting Bubble */}
@@ -169,14 +165,14 @@ export function ChatbotWidget({ className }) {
             exit={{ opacity: 0, y: 10, scale: 0.92 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             onClick={handleOpenChat}
-            className="pointer-events-auto mb-3 max-w-[280px] sm:max-w-xs bg-cloud/95 dark:bg-[#24211E]/95 backdrop-blur-md text-ink p-4 rounded-parcel border border-ink/15 dark:border-moss/30 shadow-parcel hover:shadow-parcel-hover cursor-pointer transition-all group relative mr-1"
+            className="pointer-events-auto mb-3 max-w-[280px] sm:max-w-xs bg-[var(--color-cloud)]/95 backdrop-blur-md text-ink p-4 rounded-parcel border border-ink/15 shadow-parcel hover:shadow-parcel-hover cursor-pointer transition-all group relative mr-1"
           >
             {/* Signature Gift Tag Hole Accent */}
             <div className="absolute top-3 left-3 w-2 h-2 rounded-full bg-paper border border-ink/20" />
 
             <div className="flex items-start justify-between gap-2 pl-3">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-tag bg-moss/20 dark:bg-moss/30 text-moss-dark dark:text-moss-light flex items-center justify-center shrink-0">
+                <div className="w-7 h-7 rounded-tag bg-moss/20 text-moss-dark dark:text-moss-light flex items-center justify-center shrink-0">
                   <Bot className="w-4 h-4" />
                 </div>
                 <div>
@@ -202,7 +198,7 @@ export function ChatbotWidget({ className }) {
               Have a question about our slow-crafted goods, glaze batches, or gift parcel curation?
             </p>
 
-            <div className="mt-3 pt-2 border-t border-ink/10 dark:border-ink/20 flex items-center justify-between text-[11px] font-utility text-moss-dark dark:text-moss-light pl-3 font-semibold group-hover:translate-x-0.5 transition-transform">
+            <div className="mt-3 pt-2 border-t border-ink/10 flex items-center justify-between text-[11px] font-utility text-moss-dark dark:text-moss-light pl-3 font-semibold group-hover:translate-x-0.5 transition-transform">
               <span>Chat with Artisan Assistant</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </div>
@@ -219,7 +215,6 @@ export function ChatbotWidget({ className }) {
         aria-label="Open Studio Concierge Chatbot"
         className="pointer-events-auto relative group flex items-center gap-2.5 bg-moss hover:bg-moss-dark dark:bg-moss-light dark:hover:bg-moss text-[#F7F5EF] dark:text-[#181614] font-semibold px-4 py-3 rounded-parcel border-2 border-moss-dark/40 dark:border-moss-light/50 shadow-parcel hover:shadow-parcel-hover transition-colors cursor-pointer"
       >
-        {/* Left Punched Tag Hole Detail */}
         <span
           aria-hidden="true"
           className="w-2.5 h-2.5 rounded-full bg-paper border border-moss-dark/50 shadow-inner"

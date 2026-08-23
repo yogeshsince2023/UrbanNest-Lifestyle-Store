@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>UrbanNest Lifestyle Store</title>
+    <script>
+      // Universal SPA fallback redirect for static hosts (Render, GitHub Pages, Netlify)
+      var pathSegmentsToKeep = 0;
+      var l = window.location;
+      l.replace(
+        l.protocol +
+          '//' +
+          l.hostname +
+          (l.port ? ':' + l.port : '') +
+          l.pathname
+            .split('/')
+            .slice(0, 1 + pathSegmentsToKeep)
+            .join('/') +
+          '/?/' +
+          l.pathname
+            .slice(1)
+            .split('/')
+            .slice(pathSegmentsToKeep)
+            .join('/')
+            .replace(/&/g, '~and~') +
+          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash
+      );
+    </script>
+  </head>
+  <body style="font-family: system-ui, sans-serif; background: #F0EBE0; color: #1C2B1E; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+    <p>Connecting to UrbanNest...</p>
+  </body>
+</html>

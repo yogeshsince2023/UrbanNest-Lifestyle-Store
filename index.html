@@ -39,26 +39,27 @@
     <meta name="twitter:image" content="https://urbannest-lifestyle.store/og-image.jpg" />
     <meta name="twitter:image:alt" content="UrbanNest Lifestyle Store Handcrafted Curation" />
 
-    <!-- Google Fonts: Playfair Display (display), Inter (body, utility) -->
+    <!-- SPA 404 URL Redirect Handler -->
+    <script>
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+
+    <!-- Google Fonts: Fraunces (display), Work Sans (body), Space Mono (utility) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
-    />
-    <link 
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" 
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Work+Sans:ital,wght@0,300..600;1,300..600&display=swap"
       rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
     />
-    <noscript>
-      <link 
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" 
-        rel="stylesheet" 
-      />
-    </noscript>
 
     <!-- JSON-LD Structured Data: LocalBusiness & Store Schema -->
     <script type="application/ld+json">
@@ -105,28 +106,6 @@
           "opens": "11:00",
           "closes": "17:00"
         }
-      ],
-      "department": [
-        {
-          "@type": "Department",
-          "name": "Home Décor & Pottery"
-        },
-        {
-          "@type": "Department",
-          "name": "Bespoke Gift Parcels"
-        },
-        {
-          "@type": "Department",
-          "name": "Artisan Stationery & Paper"
-        },
-        {
-          "@type": "Department",
-          "name": "Lifestyle & Daily Living"
-        }
-      ],
-      "sameAs": [
-        "https://instagram.com/urbannest_lifestyle",
-        "https://pinterest.com/urbannest_lifestyle"
       ]
     }
     </script>
