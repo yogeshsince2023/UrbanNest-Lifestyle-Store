@@ -35,8 +35,8 @@ function ScrollToTop() {
  */
 function PageFallback() {
   return (
-    <div className="flex items-center justify-center min-h-[40vh]">
-      <div className="w-8 h-8 border-2 border-moss/30 border-t-moss rounded-full animate-spin" />
+    <div className="flex items-center justify-center min-h-[50vh]">
+      <div className="w-9 h-9 border-2 border-moss/30 border-t-moss rounded-full animate-spin" />
     </div>
   );
 }
@@ -45,7 +45,7 @@ function PageFallback() {
  * Main Store Application Content — shared layout wrapping page routes
  */
 function StoreApp() {
-  const { totalCount, openDrawer } = useCart();
+  const { totalCount, openDrawer, addItem } = useCart();
   const navigate = useNavigate();
   const [isAskModalOpen, setIsAskModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
@@ -58,6 +58,7 @@ function StoreApp() {
   });
 
   const handleAddToCart = (product) => {
+    addItem(product);
     const name = typeof product === 'string' ? product : product?.name || 'Handcrafted item';
     toast.success(`Added "${name}" to parcel!`, {
       icon: '📦',
@@ -66,7 +67,7 @@ function StoreApp() {
         color: '#F7F5EF',
         border: '1px solid #45513A',
         fontFamily: 'Space Mono, monospace',
-        fontSize: '12px',
+        fontSize: '13px',
       },
     });
   };
@@ -87,14 +88,14 @@ function StoreApp() {
         color: '#F7F5EF',
         border: '1px solid #45513A',
         fontFamily: 'Space Mono, monospace',
-        fontSize: '12px',
+        fontSize: '13px',
       },
     });
     setIsAskModalOpen(true);
   };
 
   return (
-    <div className="min-h-screen bg-paper text-ink selection:bg-moss/20 selection:text-ink flex flex-col antialiased">
+    <div className="min-h-screen bg-[var(--color-paper)] text-[var(--color-ink)] flex flex-col antialiased">
       <Toaster position="top-right" containerStyle={{ zIndex: 99999 }} />
 
       <Navbar
@@ -125,13 +126,14 @@ function StoreApp() {
         />
       </Suspense>
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
+      <main className="flex-1 w-full">
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route
               path="/"
               element={
                 <HomePage
+                  onAddToCart={handleAddToCart}
                   onExploreClick={() => navigate('/shop')}
                   onAskClick={() => setIsAskModalOpen(true)}
                   onClaimOffer={(cat) => {
@@ -144,37 +146,50 @@ function StoreApp() {
             <Route
               path="/shop"
               element={
-                <ShopPage
-                  onAddToCart={handleAddToCart}
-                  activeCategory={activeCategory}
-                />
+                <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+                  <ShopPage
+                    onAddToCart={handleAddToCart}
+                    activeCategory={activeCategory}
+                  />
+                </div>
               }
             />
             <Route
               path="/about"
               element={
-                <AboutPage
-                  onExploreClick={() => navigate('/shop')}
-                  onContactClick={() => setIsAskModalOpen(true)}
-                />
+                <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+                  <AboutPage
+                    onExploreClick={() => navigate('/shop')}
+                    onContactClick={() => setIsAskModalOpen(true)}
+                  />
+                </div>
               }
             />
-            <Route path="/reviews" element={<ReviewsPage />} />
+            <Route
+              path="/reviews"
+              element={
+                <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                  <ReviewsPage />
+                </div>
+              }
+            />
             <Route
               path="/contact"
               element={
-                <ContactPage
-                  initialInquiryValues={inquiryState}
-                  onInquirySuccess={() => {
-                    setInquiryState({
-                      name: '',
-                      email: '',
-                      phone: '',
-                      category: 'General Question',
-                      message: '',
-                    });
-                  }}
-                />
+                <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
+                  <ContactPage
+                    initialInquiryValues={inquiryState}
+                    onInquirySuccess={() => {
+                      setInquiryState({
+                        name: '',
+                        email: '',
+                        phone: '',
+                        category: 'General Question',
+                        message: '',
+                      });
+                    }}
+                  />
+                </div>
               }
             />
           </Routes>

@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import {
   Sparkles,
   PackageOpen,
@@ -8,29 +8,28 @@ import {
 import productsData from '../../data/products.json';
 import { Tag } from '../ui/Tag';
 import { Button } from '../ui/Button';
-import { Categories } from '../commerce/Categories';
 import { ProductSearch } from '../commerce/ProductSearch';
 import { ProductFilters } from '../commerce/ProductFilters';
 import { ProductCard } from '../commerce/ProductCard';
 import { Recommendations } from '../commerce/Recommendations';
 import { PRICE_RANGES } from '../commerce/constants';
 import { useCart } from '../../hooks';
-
 import { cn } from '../../utils/cn';
-
-
+import {
+  getStaggerContainerVariants,
+  getFadeUpVariants,
+} from '../../utils/motion';
 
 /**
  * ShopSection Component
  *
- * Implements Step 6 & 7 cohesive product browsing layer:
+ * Implements animated product catalog with sticky category filtering:
  * - Product data loading from products.json
- * - Horizontal Category pills (Categories.jsx)
- * - Debounced ProductSearch (ProductSearch.jsx)
- * - Price Range pills (ProductFilters.jsx)
- * - AND combination filtering
+ * - Sticky category tab bar with gold active indicator
+ * - Debounced ProductSearch & Price Range filters
+ * - Staggered entrance animations on initial load & category switch
  * - Responsive product grid with ProductCard primitive
- * - Rich tactile empty state ("No products match — try clearing a filter")
+ * - Tactile empty state
  *
  * @param {Object} props
  * @param {Function} [props.onAddToCart] - Optional callback when user adds a product to cart/parcel
@@ -108,37 +107,81 @@ export function ShopSection({ onAddToCart, activeCategory, className }) {
     <section
       id="shop"
       aria-label="UrbanNest Curated Shop Collection"
-      className={cn('scroll-mt-24 space-y-10 pt-8 border-t border-ink/10', className)}
+      className={cn('scroll-mt-28 space-y-12 pt-8 border-t border-[var(--color-ink)]/10', className)}
     >
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div className="space-y-2">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-3">
           <div className="inline-flex items-center gap-2">
-            <Tag color="moss" size="sm" variant="solid" shape="tag" hasHole={true} leftIcon={<Sparkles className="w-3 h-3" />}>
+            <Tag
+              color="moss"
+              size="md"
+              variant="solid"
+              shape="tag"
+              hasHole={true}
+              leftIcon={<Sparkles className="w-3.5 h-3.5" />}
+              className="text-xs font-semibold px-3 py-1"
+            >
               Artisanal Catalog
             </Tag>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-display font-medium text-ink tracking-tight">
+          <h2 className="font-display text-4xl sm:text-5xl font-light text-[var(--color-ink)] tracking-tight">
             Curated Goods for Mindful Living
           </h2>
-          <p className="text-sm font-utility text-ink/65 max-w-2xl">
-            Explore 16 small-batch wares created by independent guild partners across four core lifestyle disciplines.
+          <p className="text-base sm:text-lg font-body text-[var(--color-ink)]/75 max-w-2xl leading-relaxed">
+            Explore small-batch wares created by independent guild partners across four core lifestyle disciplines.
           </p>
         </div>
 
-        {/* Live Filter Counter Badge */}
-        <div className="flex items-center gap-2 self-start md:self-end text-xs font-utility text-ink/70 bg-cloud px-3 py-1.5 rounded-tag border border-ink/10 shadow-xs">
-          <span>Showing</span>
-          <span className="font-bold text-ink">{filteredProducts.length}</span>
-          <span>of {productsData.length} goods</span>
+        {/* Live Filter Counter Badge / View All Link */}
+        <div className="flex items-center gap-4 self-start md:self-end">
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={handleResetFilters}
+              className="text-sm font-utility uppercase tracking-wider text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer font-semibold underline underline-offset-4"
+            >
+              Reset Filters
+            </button>
+          )}
+          <div className="flex items-center gap-2 text-sm font-utility text-[var(--color-ink)]/80 bg-[var(--color-cloud)] px-4 py-2 rounded-tag border border-[var(--color-ink)]/15 shadow-xs">
+            <span>Showing</span>
+            <span className="font-bold text-[var(--color-ink)]">{filteredProducts.length}</span>
+            <span>of {productsData.length} goods</span>
+          </div>
         </div>
       </div>
 
-      {/* Control Bar: Categories + Search + Price Filter Controls */}
-      <div className="bg-cloud/90 backdrop-blur-xs p-5 sm:p-6 rounded-parcel border border-ink/15 shadow-parcel space-y-4">
-        
-        {/* Row 1: Search & Price Filter */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+      {/* Sticky Category Filter Bar */}
+      <div className="sticky top-[68px] z-40 bg-[var(--color-paper)]/95 backdrop-blur-md border-b border-[var(--color-ink)]/10 py-3 px-2 shadow-xs">
+        <div className="flex items-center gap-8 sm:gap-10 overflow-x-auto no-scrollbar">
+          {Object.keys(categoryCounts).map((cat) => {
+            const isSelected = selectedCategory === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setSelectedCategory(cat)}
+                className={cn(
+                  'font-utility text-sm sm:text-base uppercase tracking-[0.16em] py-2 transition-all duration-200 cursor-pointer whitespace-nowrap',
+                  isSelected
+                    ? 'border-b-2 border-[var(--color-gold)] text-[var(--color-ink)] font-bold'
+                    : 'text-[var(--color-ink)]/50 hover:text-[var(--color-ink)]/90'
+                )}
+              >
+                {cat}{' '}
+                <span className="text-xs opacity-65 font-normal ml-1">
+                  ({categoryCounts[cat]})
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Control Bar: Search & Price Range Filters */}
+      <div className="bg-[var(--color-cloud)]/90 backdrop-blur-xs p-6 sm:p-7 rounded-parcel border border-[var(--color-ink)]/15 shadow-parcel space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
           <div className="lg:col-span-6">
             <ProductSearch
               value={searchQuery}
@@ -156,68 +199,59 @@ export function ShopSection({ onAddToCart, activeCategory, className }) {
             />
           </div>
         </div>
-
-        {/* Row 2: Category Filter Pills */}
-        <div className="pt-2 border-t border-ink/10">
-          <Categories
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-            counts={categoryCounts}
-          />
-        </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* PRODUCT GRID OR TACTILE EMPTY STATE */}
+      {/* PRODUCT GRID WITH STAGGERED ENTRANCE ANIMATIONS */}
       {/* ========================================================================= */}
       {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          <AnimatePresence mode="popLayout">
-            {filteredProducts.map((product) => (
-              <motion.div
-                key={product.id}
-                layout={!shouldReduceMotion}
-                initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={shouldReduceMotion ? false : { opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.25 }}
-                className="flex"
-              >
-                <ProductCard
-                  product={product}
-                  onAddToCart={handleAdd}
-                />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
+        <motion.div
+          key={selectedCategory}
+          variants={getStaggerContainerVariants(shouldReduceMotion, 0.08, 0.05)}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+        >
+          {filteredProducts.map((product) => (
+            <motion.div
+              key={product.id}
+              variants={getFadeUpVariants(shouldReduceMotion)}
+              className="flex"
+            >
+              <ProductCard
+                product={product}
+                onAddToCart={handleAdd}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
       ) : (
         /* ========================================================================= */
-        /* TACTILE EMPTY STATE (Design System Styled) */
+        /* TACTILE EMPTY STATE */
         /* ========================================================================= */
-        <div className="py-16 px-6 rounded-parcel bg-cloud/80 border border-dashed border-ink/20 text-center max-w-xl mx-auto shadow-sm space-y-5">
-          <div className="w-16 h-16 rounded-full bg-paper border border-ink/15 flex items-center justify-center mx-auto text-ink/60 shadow-inner">
-            <PackageOpen className="w-8 h-8 text-clay" />
+        <div className="py-20 px-8 rounded-parcel bg-[var(--color-cloud)]/80 border border-dashed border-[var(--color-ink)]/20 text-center max-w-xl mx-auto shadow-sm space-y-6">
+          <div className="w-18 h-18 rounded-full bg-[var(--color-paper)] border border-[var(--color-ink)]/15 flex items-center justify-center mx-auto text-[var(--color-ink)]/60 shadow-inner">
+            <PackageOpen className="w-9 h-9 text-[var(--color-clay)]" />
           </div>
 
-          <div className="space-y-2">
-            <h3 className="text-2xl font-display font-medium text-ink">
+          <div className="space-y-3">
+            <h3 className="text-2xl sm:text-3xl font-display font-medium text-[var(--color-ink)]">
               No Handcrafted Goods Found
             </h3>
-            <p className="text-xs sm:text-sm font-utility text-ink/65 max-w-md mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base font-body text-[var(--color-ink)]/75 max-w-md mx-auto leading-relaxed">
               We couldn&apos;t find any objects matching your criteria
               {searchQuery ? ` for "${searchQuery}"` : ''}. Try broadening your search or resetting the filters.
             </p>
           </div>
 
-          <div className="pt-2">
+          <div className="pt-3">
             <Button
               variant="secondary"
               color="clay"
-              size="md"
-              leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
+              size="lg"
+              leftIcon={<RotateCcw className="w-4 h-4" />}
               onClick={handleResetFilters}
-              className="shadow-xs"
+              className="shadow-xs text-sm"
             >
               Reset All Filters
             </Button>
@@ -225,7 +259,7 @@ export function ShopSection({ onAddToCart, activeCategory, className }) {
         </div>
       )}
 
-      {/* Step 16: AI-Powered Content-Based Recommendations ("You Might Also Like") */}
+      {/* AI-Powered Content-Based Recommendations ("You Might Also Like") */}
       <Recommendations
         variant="section"
         onAddToCart={handleAdd}
@@ -233,6 +267,5 @@ export function ShopSection({ onAddToCart, activeCategory, className }) {
     </section>
   );
 }
-
 
 export default ShopSection;

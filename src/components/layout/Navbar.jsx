@@ -1,22 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  ShoppingBag,
-  Sun,
-  Moon,
-  Sparkles,
-  MessageCircle,
-  ArrowUpRight,
-} from 'lucide-react';
+import { ShoppingBag, Sun, Moon, Menu, X } from 'lucide-react';
 import { Button } from '../ui/Button';
-import { Tag } from '../ui/Tag';
 import { useTheme } from '../../hooks';
 import { cn } from '../../utils/cn';
 
-/**
- * Navigation items — now routes, not hash anchors
- */
 const NAV_LINKS = [
   { label: 'Home', path: '/' },
   { label: 'Shop', path: '/shop' },
@@ -25,36 +14,22 @@ const NAV_LINKS = [
   { label: 'Contact', path: '/contact' },
 ];
 
-/**
- * Responsive Navbar Component
- *
- * Uses react-router's useLocation for active state — no scroll-spy,
- * so no cursor-jumping during navigation.
- *
- * @param {Object} props
- * @param {number} [props.cartCount=0] - Cart item count badge
- * @param {Function} [props.onCartClick] - Cart icon click handler
- * @param {Function} [props.onThemeToggle] - Theme toggle callback
- */
 export function Navbar({ cartCount = 0, onCartClick, onAskClick, onThemeToggle }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { theme, isDark, toggleTheme } = useTheme();
+  const { isDark, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Track scroll position for sticky background
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      setIsScrolled(window.scrollY > 20);
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile drawer on Escape key
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && isMobileMenuOpen) {
@@ -65,7 +40,6 @@ export function Navbar({ cartCount = 0, onCartClick, onAskClick, onThemeToggle }
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isMobileMenuOpen]);
 
-  // Lock body scroll when mobile drawer is open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -77,14 +51,12 @@ export function Navbar({ cartCount = 0, onCartClick, onAskClick, onThemeToggle }
     };
   }, [isMobileMenuOpen]);
 
-  // Route navigation handler — replaces scroll-spy
   const handleNavClick = (e, path) => {
     e.preventDefault();
     setIsMobileMenuOpen(false);
     navigate(path);
   };
 
-  // Toggle dark/light mode via ThemeContext
   const handleToggleTheme = () => {
     toggleTheme();
     if (onThemeToggle) onThemeToggle(!isDark);
@@ -94,279 +66,145 @@ export function Navbar({ cartCount = 0, onCartClick, onAskClick, onThemeToggle }
     <>
       <header
         className={cn(
-          'sticky top-0 z-50 w-full transition-all duration-300',
+          'sticky top-0 z-50 w-full transition-all duration-300 bg-[var(--color-paper)]/95 backdrop-blur-md border-b border-[var(--color-ink)]/15',
           isScrolled
-            ? 'bg-paper/90 backdrop-blur-md shadow-parcel border-b border-ink/10 py-3'
-            : 'bg-paper/60 backdrop-blur-sm border-b border-transparent py-4 md:py-5'
+            ? 'py-4 shadow-[0_2px_20px_rgba(0,0,0,0.08)]'
+            : 'py-5 shadow-xs'
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-4">
-            
-            {/* 1. Logotype & Wordmark */}
-            <a
-              href="/"
-              onClick={(e) => handleNavClick(e, '/')}
-              className="group inline-flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss focus-visible:ring-offset-2 rounded-tag transition-transform active:scale-[0.98]"
-              aria-label="UrbanNest Lifestyle Store — Return to home"
-            >
-              <div className="relative w-8 h-8 md:w-9 md:h-9 rounded-tag bg-moss flex items-center justify-center text-cloud shadow-sm group-hover:bg-moss-dark transition-colors">
-                {/* Signature chamfered tag hole inside logo icon */}
-                <span className="absolute top-1.5 left-1.5 w-1.5 h-1.5 rounded-full bg-paper border border-cloud/40 pointer-events-none" />
-                <Sparkles className="w-4 h-4 md:w-4.5 md:h-4.5 text-cloud ml-1 mt-1" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-display font-medium text-xl md:text-2xl text-ink tracking-tight leading-none group-hover:text-moss transition-colors">
-                  UrbanNest
+          <div className="flex items-center justify-between">
+            {/* Logo area */}
+            <div className="flex-shrink-0 z-50">
+              <a
+                href="/"
+                onClick={(e) => handleNavClick(e, '/')}
+                className="flex items-center gap-2 group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
+                aria-label="UrbanNest Home"
+              >
+                <span className="font-display font-medium text-3xl sm:text-4xl tracking-tighter text-ink transition-transform group-hover:scale-95 origin-left">
+                  Urban<span className="text-[var(--color-gold)]">·</span>Nest
                 </span>
-                <span className="text-[10px] font-utility tracking-widest text-ink/60 uppercase mt-0.5 hidden sm:inline-block">
-                  Lifestyle Store
-                </span>
-              </div>
-            </a>
+              </a>
+            </div>
 
-            {/* 2. Desktop Navigation Links (Route-Based Active State) */}
-            <nav
-              aria-label="Main Navigation"
-              className="hidden md:flex items-center gap-1 lg:gap-2 bg-cloud/70 backdrop-blur-sm px-3 py-1.5 rounded-pill border border-ink/8 shadow-sm"
-            >
+            {/* Desktop Navigation Links */}
+            <nav className="hidden md:flex items-center gap-8 lg:gap-12 absolute left-1/2 -translate-x-1/2">
               {NAV_LINKS.map((link) => {
                 const isActive = location.pathname === link.path;
                 return (
                   <a
-                    key={link.path}
+                    key={link.label}
                     href={link.path}
                     onClick={(e) => handleNavClick(e, link.path)}
-                    aria-current={isActive ? 'page' : undefined}
                     className={cn(
-                      'relative px-3.5 py-1.5 text-xs font-utility uppercase tracking-wider rounded-tag transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss',
+                      'text-base lg:text-lg uppercase tracking-[0.16em] font-utility transition-all duration-300 relative py-2',
                       isActive
-                        ? 'text-cloud font-medium bg-moss shadow-sm'
-                        : 'text-ink/75 hover:text-ink hover:bg-paper/80'
+                        ? 'opacity-100 text-ink font-bold'
+                        : 'opacity-70 hover:opacity-100 text-ink font-medium'
                     )}
                   >
                     {link.label}
-                    {/* Active gift-tag eyelet dot */}
                     {isActive && (
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-paper ml-1.5 align-middle opacity-90" />
+                      <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[var(--color-gold)]" />
                     )}
                   </a>
                 );
               })}
             </nav>
 
-            {/* 3. Action Hub: CTA Button, Cart Badge & Theme Switcher */}
-            <div className="flex items-center gap-2 sm:gap-3">
-              
-              {/* Primary CTA: Ask Us Anything (Opens Instant Inquiry Modal or Navigates) */}
-              <div className="hidden lg:inline-flex">
-                <Button
-                  variant="primary"
-                  color="moss"
-                  size="sm"
-                  leftIcon={<MessageCircle className="w-3.5 h-3.5" />}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (onAskClick) {
-                      onAskClick();
-                    } else {
-                      handleNavClick(e, '/contact');
-                    }
-                  }}
-                  aria-label="Ask Us Anything — Open inquiry form"
-                >
-                  Ask Us Anything
-                </Button>
-              </div>
-
-              {/* Shopping Bag Cart Icon with Count Badge */}
+            {/* Utility Actions */}
+            <div className="flex items-center gap-4 z-50">
               <button
-                type="button"
-                onClick={onCartClick}
-                aria-label={`Shopping parcel containing ${cartCount} items`}
-                className="relative p-2.5 rounded-tag text-ink/80 hover:text-ink hover:bg-cloud transition-colors border border-transparent hover:border-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
-              >
-                <ShoppingBag className="w-5 h-5" aria-hidden="true" />
-                {cartCount > 0 && (
-                  <span
-                    aria-hidden="true"
-                    className="absolute -top-1 -right-1 min-w-[1.25rem] h-5 px-1 rounded-pill bg-clay text-cloud text-[11px] font-utility font-bold flex items-center justify-center shadow-sm border border-paper scale-100 transition-transform animate-pulse"
-                  >
-                    {cartCount}
-                  </span>
-                )}
-              </button>
-
-              {/* Dark / Light Mode Switcher Toggle */}
-              <button
-                type="button"
                 onClick={handleToggleTheme}
-                aria-label={isDark ? 'Switch to light natural theme' : 'Switch to dark evening theme'}
-                className="relative p-2.5 rounded-tag text-ink/80 hover:text-ink hover:bg-cloud transition-colors border border-transparent hover:border-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss overflow-hidden cursor-pointer"
+                className="w-12 h-12 flex items-center justify-center rounded-none text-ink hover:bg-[var(--color-ink)]/10 transition-all focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] cursor-pointer"
+                aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                title={isDark ? 'Light mode' : 'Dark mode'}
               >
-                <AnimatePresence mode="wait" initial={false}>
+                <AnimatePresence mode="wait">
                   <motion.div
-                    key={theme}
-                    initial={{ rotate: -90, scale: 0.5, opacity: 0 }}
-                    animate={{ rotate: 0, scale: 1, opacity: 1 }}
-                    exit={{ rotate: 90, scale: 0.5, opacity: 0 }}
-                    transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                    key={isDark ? 'dark' : 'light'}
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
                   >
                     {isDark ? (
-                      <Sun className="w-5 h-5 text-brass" aria-hidden="true" />
+                      <Sun className="w-6 h-6 text-[var(--color-gold)]" />
                     ) : (
-                      <Moon className="w-5 h-5 text-ink/80" aria-hidden="true" />
+                      <Moon className="w-6 h-6 text-ink" />
                     )}
                   </motion.div>
                 </AnimatePresence>
               </button>
 
-              {/* Mobile Hamburger Toggle Button (< 768px) */}
               <button
-                type="button"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-expanded={isMobileMenuOpen}
-                aria-controls="mobile-navigation-drawer"
-                aria-label={isMobileMenuOpen ? 'Close mobile menu' : 'Open mobile navigation menu'}
-                className="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-tag bg-cloud text-ink border border-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss transition-colors"
+                onClick={onCartClick}
+                className="w-12 h-12 relative flex items-center justify-center rounded-none text-ink hover:bg-[var(--color-ink)]/10 transition-all focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] cursor-pointer"
+                aria-label="Open Cart"
               >
-                <div className="relative w-5 h-4 flex flex-col justify-between">
-                  <span
-                    className={cn(
-                      'w-full h-0.5 bg-ink rounded-full transition-all duration-300 origin-left',
-                      isMobileMenuOpen && 'rotate-45 translate-x-0.5 -translate-y-0.5'
-                    )}
-                  />
-                  <span
-                    className={cn(
-                      'w-full h-0.5 bg-ink rounded-full transition-opacity duration-200',
-                      isMobileMenuOpen && 'opacity-0'
-                    )}
-                  />
-                  <span
-                    className={cn(
-                      'w-full h-0.5 bg-ink rounded-full transition-all duration-300 origin-left',
-                      isMobileMenuOpen && '-rotate-45 translate-x-0.5 translate-y-0.5'
-                    )}
-                  />
-                </div>
+                <ShoppingBag className="w-6 h-6 text-ink" />
+                <AnimatePresence>
+                  {cartCount > 0 && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      className="absolute top-2.5 right-2.5 w-2.5 h-2.5 rounded-full bg-[var(--color-gold)] shadow-sm"
+                    />
+                  )}
+                </AnimatePresence>
+              </button>
+
+              {/* Mobile Menu Toggle */}
+              <button
+                className="md:hidden w-12 h-12 flex items-center justify-center text-ink cursor-pointer"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle Menu"
+              >
+                {isMobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* 4. Slide-in Mobile Menu Drawer (Framer Motion) */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <>
-            {/* Backdrop Overlay */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 z-40 bg-ink/40 backdrop-blur-sm md:hidden"
-              aria-hidden="true"
-            />
-
-            {/* Slide-in Navigation Drawer */}
-            <motion.aside
-              id="mobile-navigation-drawer"
-              aria-label="Mobile Navigation"
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="fixed top-0 right-0 bottom-0 z-50 w-full max-w-xs bg-paper border-l border-ink/15 shadow-2xl p-6 flex flex-col justify-between md:hidden overflow-y-auto"
-            >
-              <div className="space-y-6">
-                {/* Header inside drawer */}
-                <div className="flex items-center justify-between border-b border-ink/10 pb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-tag bg-moss flex items-center justify-center text-cloud">
-                      <Sparkles className="w-3.5 h-3.5" />
-                    </div>
-                    <span className="font-display font-medium text-lg text-ink">UrbanNest</span>
-                  </div>
-                  <Tag color="moss" size="sm" variant="subtle">
-                    Artisan Goods
-                  </Tag>
-                </div>
-
-                {/* Navigation Links */}
-                <nav className="flex flex-col space-y-1">
-                  {NAV_LINKS.map((link) => {
-                    const isActive = location.pathname === link.path;
-                    return (
-                      <a
-                        key={link.path}
-                        href={link.path}
-                        onClick={(e) => handleNavClick(e, link.path)}
-                        className={cn(
-                          'flex items-center justify-between px-4 py-3 rounded-tag text-sm font-utility uppercase tracking-wider transition-colors',
-                          isActive
-                            ? 'bg-moss text-cloud font-semibold shadow-sm'
-                            : 'text-ink/80 hover:bg-cloud hover:text-ink'
-                        )}
-                      >
-                        <span>{link.label}</span>
-                        {isActive ? (
-                          <span className="w-2 h-2 rounded-full bg-paper" />
-                        ) : (
-                          <ArrowUpRight className="w-4 h-4 opacity-40" />
-                        )}
-                      </a>
-                    );
-                  })}
-                </nav>
-              </div>
-
-              {/* Drawer Bottom Actions */}
-              <div className="pt-6 border-t border-ink/10 space-y-4">
-                <Button
-                  variant="primary"
-                  color="moss"
-                  size="md"
-                  className="w-full justify-center"
-                  leftIcon={<MessageCircle className="w-4 h-4" />}
-                  onClick={(e) => {
-                    setIsMobileMenuOpen(false);
-                    if (onAskClick) {
-                      onAskClick();
-                    } else {
-                      handleNavClick(e, '/contact');
-                    }
-                  }}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 bg-[#162518] dark:bg-[#0E1A0F] pt-28 px-8 md:hidden flex flex-col justify-between pb-12"
+          >
+            <nav className="flex flex-col gap-8">
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.path}
+                  onClick={(e) => handleNavClick(e, link.path)}
+                  className="text-4xl sm:text-5xl font-display font-medium tracking-tight text-[#F0EBE0] hover:text-[var(--color-gold)] transition-colors uppercase"
                 >
-                  Ask Us Anything
-                </Button>
-
-                <div className="flex items-center justify-between px-2 pt-2 text-xs font-utility text-ink/75">
-                  <span>Cart Items: <strong className="text-ink">{cartCount}</strong></span>
-                  <button
-                    type="button"
-                    onClick={handleToggleTheme}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-tag bg-paper hover:bg-cloud border border-ink/15 text-ink text-xs transition-colors cursor-pointer"
-                  >
-                    {isDark ? (
-                      <>
-                        <Sun className="w-3.5 h-3.5 text-brass" />
-                        <span>Evening Mode</span>
-                      </>
-                    ) : (
-                      <>
-                        <Moon className="w-3.5 h-3.5 text-ink/70" />
-                        <span>Daylight Mode</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-            </motion.aside>
-          </>
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+            <div>
+              <Button
+                variant="primary"
+                color="ink"
+                size="lg"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  if (onAskClick) onAskClick();
+                }}
+                className="w-full text-base py-4 bg-[var(--color-gold)] text-[#1C2B1E] font-bold"
+              >
+                Inquire
+              </Button>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>

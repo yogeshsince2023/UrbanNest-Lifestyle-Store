@@ -5,6 +5,11 @@
 @tailwind utilities;
 
 @layer base {
+  ::selection {
+    background-color: var(--color-gold, #C9A84C);
+    color: var(--color-forest, #1C2B1E);
+  }
+
   html {
     scroll-behavior: smooth;
     color: var(--color-ink);
@@ -17,6 +22,16 @@
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-brass, #C9A84C);
+    border-radius: 0px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-brass-dark, #A88A38);
   }
 
   /* Accessibility Floor: Visible Keyboard Focus Rings in Moss */
@@ -40,42 +55,92 @@
 }
 
 @layer components {
-  /* Signature Gift-Tag Motif Component */
+  /* Editorial Sharp Card Effect */
+  .parcel-card {
+    background-color: var(--color-cloud);
+    border-radius: var(--radius-parcel);
+    box-shadow: var(--shadow-parcel);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(15, 15, 15, 0.05);
+  }
+
+  .dark .parcel-card, [data-theme="dark"] .parcel-card {
+    border: 1px solid rgba(250, 250, 250, 0.05);
+  }
+
+  .parcel-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-parcel-hover);
+  }
+
+  /* Minimal Utility Tag */
   .gift-tag {
     position: relative;
     display: inline-flex;
     align-items: center;
     border-radius: var(--radius-tag);
     font-family: var(--font-utility);
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 1px solid var(--color-ink);
   }
 
-  /* Gift Tag Hole Accent */
-  .gift-tag-hole::before {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: var(--color-paper);
-    border: 1px solid currentColor;
-    margin-right: 0.5rem;
-    flex-shrink: 0;
+  /* Tilt card — 3D perspective lift effect */
+  .tilt-card {
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform var(--duration-base, 320ms) var(--ease-craft, cubic-bezier(0.16,1,0.3,1)),
+                box-shadow var(--duration-base, 320ms) var(--ease-craft, cubic-bezier(0.16,1,0.3,1));
   }
 
-  /* Parcel Card Lift & Peel Hover Effect */
-  .parcel-card {
-    background-color: var(--color-cloud);
-    border-radius: var(--radius-parcel);
-    box-shadow: var(--shadow-parcel);
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    overflow: hidden;
+  /* Floating breathe animation for hero mosaic */
+  @keyframes floatBreath {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+  .float-breath {
+    animation: floatBreath 4s ease-in-out infinite;
   }
 
-  .parcel-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-parcel-hover);
+  /* Card shimmer skeleton for image loading */
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--color-cloud) 25%,
+      var(--color-paper) 50%,
+      var(--color-cloud) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+  }
+
+  /* Scroll reveal base state */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 600ms var(--ease-craft, cubic-bezier(0.16,1,0.3,1)),
+      transform 600ms var(--ease-craft, cubic-bezier(0.16,1,0.3,1));
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-24px);
+    transition:
+      opacity 600ms var(--ease-craft, cubic-bezier(0.16,1,0.3,1)),
+      transform 600ms var(--ease-craft, cubic-bezier(0.16,1,0.3,1));
+  }
+  .reveal-left.is-visible {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
