@@ -166,7 +166,7 @@ export function ShopSection({ onAddToCart, activeCategory, className }) {
                   'font-utility text-sm sm:text-base uppercase tracking-[0.16em] py-2 transition-all duration-200 cursor-pointer whitespace-nowrap',
                   isSelected
                     ? 'border-b-2 border-[var(--color-gold)] text-[var(--color-ink)] font-bold'
-                    : 'text-[var(--color-ink)]/50 hover:text-[var(--color-ink)]/90'
+                    : 'text-[var(--color-ink)]/70 hover:text-[var(--color-ink)] font-medium'
                 )}
               >
                 {cat}{' '}

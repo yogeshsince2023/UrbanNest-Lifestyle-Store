@@ -8,7 +8,7 @@ import { cn } from '../../utils/cn';
  *
  * @param {Object} props
  * @param {React.ReactNode} props.children - Label or content
- * @param {'moss'|'clay'|'brass'|'ink'|'paper'|'cloud'} [props.color='moss'] - Color theme
+ * @param {'moss'|'clay'|'brass'|'ink'|'paper'|'cloud'} [props.color='ink'] - Color theme
  * @param {'sm'|'md'|'lg'} [props.size='md'] - Sizing preset
  * @param {'tag'|'pill'|'rounded'} [props.shape='tag'] - Geometry shape (signature tag with chamfer & eyelet, pill, or rounded)
  * @param {'solid'|'subtle'|'outline'} [props.variant='solid'] - Visual surface style
@@ -33,37 +33,37 @@ export function Tag({
 }) {
   const Component = 'span';
 
-  // Color & Variant Mapping
+  // Color & Variant Mapping with high-contrast text guarantee in both light & dark themes
   const colorStyles = {
     moss: {
       solid: 'bg-moss text-paper border-moss',
-      subtle: 'bg-moss/10 text-moss border-moss/25',
-      outline: 'bg-transparent text-moss border-moss',
+      subtle: 'bg-moss/15 text-moss border-moss/30 font-medium',
+      outline: 'bg-transparent text-moss border-moss font-medium',
     },
     clay: {
       solid: 'bg-clay text-paper border-clay',
-      subtle: 'bg-clay/10 text-clay border-clay/25',
-      outline: 'bg-transparent text-clay border-clay',
+      subtle: 'bg-clay/15 text-clay border-clay/30 font-medium',
+      outline: 'bg-transparent text-clay border-clay font-medium',
     },
     brass: {
-      solid: 'bg-brass text-paper border-brass',
-      subtle: 'bg-brass/15 text-brass-dark border-brass/30',
-      outline: 'bg-transparent text-brass-dark border-brass',
+      solid: 'bg-brass text-paper dark:text-[#0E1A0F] border-brass font-bold',
+      subtle: 'bg-brass/15 text-[var(--color-gold)] border-brass/30 font-medium',
+      outline: 'bg-transparent text-[var(--color-gold)] border-brass font-medium',
     },
     ink: {
       solid: 'bg-ink text-paper border-ink',
-      subtle: 'bg-ink/10 text-ink border-ink/20',
-      outline: 'bg-transparent text-ink border-ink',
+      subtle: 'bg-ink/10 text-ink border-ink/20 font-medium',
+      outline: 'bg-transparent text-ink border-ink font-medium',
     },
     paper: {
       solid: 'bg-paper text-ink border-ink/20',
-      subtle: 'bg-paper/80 text-ink border-ink/15',
-      outline: 'bg-transparent text-ink border-ink/25',
+      subtle: 'bg-paper/80 text-ink border-ink/15 font-medium',
+      outline: 'bg-transparent text-ink border-ink/25 font-medium',
     },
     cloud: {
-      solid: 'bg-cloud text-ink border-ink/10',
-      subtle: 'bg-cloud/70 text-ink border-ink/15',
-      outline: 'bg-transparent text-ink border-ink/20',
+      solid: 'bg-cloud text-ink border-ink/15',
+      subtle: 'bg-cloud/70 text-ink border-ink/20 font-medium',
+      outline: 'bg-transparent text-ink border-ink/25 font-medium',
     },
   };
 

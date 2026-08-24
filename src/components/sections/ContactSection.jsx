@@ -32,7 +32,7 @@ export function ContactSection({
               variant="solid"
               shape="tag"
               hasHole={true}
-              leftIcon={<MessageCircle className="w-3.5 h-3.5 text-cloud" />}
+              leftIcon={<MessageCircle className="w-3.5 h-3.5" />}
             >
               {isOrderInquiry ? 'Order Inquiry' : 'Concierge Service'}
             </Tag>

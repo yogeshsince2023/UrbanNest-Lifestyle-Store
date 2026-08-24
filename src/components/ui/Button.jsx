@@ -43,7 +43,6 @@ export function Button({
   const isDisabled = disabled || loading;
 
   // Size Specifications with touch target accessibility
-  // Size Specifications
   const sizeStyles = {
     sm: {
       base: 'text-[11px] uppercase tracking-widest py-2 min-h-[36px] font-utility font-medium',
@@ -71,32 +70,30 @@ export function Button({
     },
   };
 
-
   const currentSize = sizeStyles[size] || sizeStyles.md;
 
-  // Variant & Color Styles
+  // Variant & Color Styles with high-contrast text guarantee in both light & dark themes
   const primaryColors = {
     moss: 'bg-moss hover:bg-moss-dark text-paper border border-moss shadow-sm hover:shadow transition-all',
     clay: 'bg-clay hover:bg-clay-dark text-paper border border-clay shadow-sm hover:shadow transition-all',
-    brass: 'bg-brass hover:bg-brass-dark text-paper border border-brass shadow-sm hover:shadow transition-all',
+    brass: 'bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] text-[#1C2B1E] border border-[var(--color-gold)] shadow-sm hover:shadow transition-all font-bold',
     ink: 'bg-ink hover:bg-cloud hover:text-ink text-paper border border-ink shadow-sm hover:shadow transition-all',
   };
 
   const secondaryColors = {
-    moss: 'border border-moss text-moss hover:bg-moss hover:text-paper transition-all',
-    clay: 'border border-clay text-clay hover:bg-clay hover:text-paper transition-all',
-    brass: 'border border-brass text-brass hover:bg-brass hover:text-paper transition-all',
-    ink: 'border border-ink text-ink hover:bg-ink hover:text-paper transition-all',
+    moss: 'border border-moss text-moss hover:bg-moss hover:text-paper transition-all font-semibold',
+    clay: 'border border-clay text-clay hover:bg-clay hover:text-paper transition-all font-semibold',
+    brass: 'border border-[var(--color-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-[#1C2B1E] transition-all font-semibold',
+    ink: 'border border-ink text-ink hover:bg-ink hover:text-paper transition-all font-semibold',
   };
 
   const ghostColors = {
-    moss: 'text-moss hover:opacity-70 after:bg-moss',
-    clay: 'text-clay hover:opacity-70 after:bg-clay',
-    brass: 'text-brass hover:opacity-70 after:bg-brass',
-    ink: 'text-ink hover:opacity-70 after:bg-ink',
+    moss: 'text-moss hover:opacity-75 after:bg-moss font-semibold',
+    clay: 'text-clay hover:opacity-75 after:bg-clay font-semibold',
+    brass: 'text-[var(--color-gold)] hover:opacity-75 after:bg-[var(--color-gold)] font-semibold',
+    ink: 'text-ink hover:opacity-75 after:bg-ink font-semibold',
   };
 
-  // Primary Gift-Tag Clip Path
   return (
     <Component
       type={href ? undefined : type}
@@ -134,7 +131,6 @@ export function Button({
           currentSize.ghostPadding,
           ghostColors[color] || ghostColors.ink,
           !isDisabled && 'cursor-pointer',
-          // Animated editorial underline
           'after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:h-[1px] after:w-0 after:transition-all after:duration-300 hover:after:w-full',
         ],
         
@@ -143,8 +139,6 @@ export function Button({
       )}
       {...restProps}
     >
-      {/* Icon/Content layout */}
-
       {/* Loading Spinner */}
       {loading && (
         <Loader2

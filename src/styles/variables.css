@@ -8,24 +8,26 @@
   --color-ink: #1C2B1E;
   --color-cloud: #E8E1D3;
   
-  /* Accents */
+  /* Accents - High Contrast AAA Calibrated */
   --color-moss: #2D4A31;
   --color-moss-dark: #1C2B1E;
   --color-moss-light: #4A7A52;
-  --color-clay: #C4897A;
-  --color-clay-dark: #A66E60;
-  --color-clay-light: #D9A898;
-  --color-brass: #C9A84C;
-  --color-brass-dark: #A88A38;
-  --color-brass-light: #E0C070;
+  
+  --color-clay: #9A4636;
+  --color-clay-dark: #7A3326;
+  --color-clay-light: #C46E5E;
+  
+  --color-brass: #8A6414;
+  --color-brass-dark: #6E4F0E;
+  --color-brass-light: #A88022;
 
   /* Aliases & Semantic Additions */
   --color-parchment: #F0EBE0;
   --color-forest: #1C2B1E;
   --color-forest-light: #2D4A31;
-  --color-gold: #C9A84C;
-  --color-gold-light: #E0C070;
-  --color-rose: #C4897A;
+  --color-gold: #8A6414;
+  --color-gold-light: #A88022;
+  --color-rose: #9A4636;
 
   /* Focus Ring (A11y Floor) */
   --focus-ring-color: var(--color-ink);
@@ -65,14 +67,14 @@
   --color-ink: #F0EBE0;
   --color-cloud: #162118;
 
-  /* Accents */
+  /* Accents - High Contrast Luminous */
   --color-moss: #C8DFC9;
   --color-moss-dark: #F0EBE0;
   --color-moss-light: #8BB88E;
   
-  --color-clay: #D9A898;
-  --color-clay-dark: #E8BFB4;
-  --color-clay-light: #C4897A;
+  --color-clay: #E8A898;
+  --color-clay-dark: #F2C2B6;
+  --color-clay-light: #D98E7E;
 
   --color-brass: #E0C070;
   --color-brass-dark: #F0D898;
@@ -84,7 +86,7 @@
   --color-forest-light: #E0EFE1;
   --color-gold: #E0C070;
   --color-gold-light: #F0D898;
-  --color-rose: #D9A898;
+  --color-rose: #E8A898;
 
   /* Focus Ring */
   --focus-ring-color: var(--color-ink);

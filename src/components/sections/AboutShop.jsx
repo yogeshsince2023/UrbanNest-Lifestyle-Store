@@ -270,7 +270,7 @@ export function AboutShop({ onExploreClick, onContactClick, className }) {
                 variant="solid"
                 shape="tag"
                 hasHole={true}
-                leftIcon={<Sparkles className="w-3.5 h-3.5 text-cloud/90" aria-hidden="true" />}
+                leftIcon={<Sparkles className="w-3.5 h-3.5" aria-hidden="true" />}
                 className="shadow-sm tracking-widest text-[11px] sm:text-xs"
               >
                 Our Story &amp; Philosophy

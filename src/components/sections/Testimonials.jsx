@@ -106,7 +106,7 @@ export function Testimonials({ className }) {
               variant="solid"
               shape="tag"
               hasHole={true}
-              leftIcon={<Sparkles className="w-3.5 h-3.5 text-cloud" />}
+              leftIcon={<Sparkles className="w-3.5 h-3.5" />}
               className="text-xs font-semibold px-3 py-1"
             >
               Patron Notes &amp; Unboxing Stories
