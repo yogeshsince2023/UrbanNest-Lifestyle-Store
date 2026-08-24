@@ -130,18 +130,19 @@ export function Hero({ onExploreClick, onAskClick, className }) {
           >
             <Button
               variant="primary"
-              color="ink"
+              color="gold"
               size="lg"
               onClick={onExploreClick}
-              className="bg-[var(--color-gold)] text-[#1C2B1E] hover:bg-[var(--color-gold-light)] border-0 transition-all duration-200 text-base font-bold px-8 py-4 shadow-sm"
+              className="text-base font-bold px-8 py-4 shadow-md"
             >
               Explore Collection
             </Button>
             <Button
-              variant="ghost"
+              variant="secondary"
+              color="white"
               size="lg"
               onClick={onAskClick}
-              className="border border-[#F0EBE0]/40 text-[#F0EBE0] hover:border-[#F0EBE0] hover:bg-white/5 bg-transparent text-base px-8 py-4 font-medium"
+              className="text-base px-8 py-4 font-medium"
             >
               Our Story →
             </Button>

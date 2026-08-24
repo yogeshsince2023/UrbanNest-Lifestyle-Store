@@ -142,13 +142,14 @@ export function Recommendations({
               </div>
 
               <Button
-                variant="outline"
+                variant="secondary"
+                color="moss"
                 size="sm"
                 onClick={() => handleAdd(prod)}
-                className="py-1 px-2 text-xs shrink-0 hover:bg-moss hover:text-cloud hover:border-moss"
+                className="py-1 px-2.5 text-xs shrink-0"
                 aria-label={`Add recommended ${prod.name} to parcel`}
+                leftIcon={<Plus className="w-3.5 h-3.5" />}
               >
-                <Plus className="w-3.5 h-3.5 mr-1" />
                 Add
               </Button>
             </div>

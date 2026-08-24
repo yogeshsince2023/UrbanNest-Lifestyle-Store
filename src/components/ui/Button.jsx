@@ -5,14 +5,22 @@ import { cn } from '../../utils/cn';
  * Reusable Button Primitive Component (Editorial Style)
  *
  * Variants:
- * - `primary`: Sharp, solid high-contrast block.
- * - `secondary`: Thin border, sharp corners.
+ * - `primary`: Solid high-contrast block.
+ * - `secondary` / `outline`: Outlined with border.
  * - `ghost`: Typographic action with animated underline.
+ *
+ * Colors:
+ * - `gold` / `brass`: Warm radiant gold with crisp dark ink text.
+ * - `moss`: Forest green.
+ * - `clay`: Warm terracotta.
+ * - `white`: White surface / light border (ideal for dark surfaces/hero panels).
+ * - `paper`: Soft parchment.
+ * - `ink`: Deep ink surface.
  *
  * @param {Object} props
  * @param {React.ReactNode} props.children - Button label
- * @param {'primary'|'secondary'|'ghost'} [props.variant='primary']
- * @param {'moss'|'clay'|'brass'|'ink'} [props.color='ink']
+ * @param {'primary'|'secondary'|'outline'|'ghost'} [props.variant='primary']
+ * @param {'moss'|'clay'|'brass'|'gold'|'white'|'paper'|'ink'} [props.color='ink']
  * @param {'sm'|'md'|'lg'} [props.size='md']
  * @param {boolean} [props.loading=false]
  * @param {string} [props.loadingText]
@@ -41,6 +49,7 @@ export function Button({
 }) {
   const Component = as || (href ? 'a' : 'button');
   const isDisabled = disabled || loading;
+  const isOutline = variant === 'secondary' || variant === 'outline';
 
   // Size Specifications with touch target accessibility
   const sizeStyles = {
@@ -72,25 +81,36 @@ export function Button({
 
   const currentSize = sizeStyles[size] || sizeStyles.md;
 
-  // Variant & Color Styles with high-contrast text guarantee in both light & dark themes
+  // Primary Solid Colors
   const primaryColors = {
+    gold: 'bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] text-[#1C2B1E] border border-[var(--color-gold)] shadow-sm hover:shadow font-bold',
+    brass: 'bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] text-[#1C2B1E] border border-[var(--color-gold)] shadow-sm hover:shadow font-bold',
+    white: 'bg-[#F0EBE0] hover:bg-white text-[#1C2B1E] border border-[#F0EBE0] shadow-sm hover:shadow font-bold',
+    paper: 'bg-paper hover:bg-cloud text-ink border border-ink/20 shadow-sm hover:shadow font-bold',
     moss: 'bg-moss hover:bg-moss-dark text-paper border border-moss shadow-sm hover:shadow transition-all',
     clay: 'bg-clay hover:bg-clay-dark text-paper border border-clay shadow-sm hover:shadow transition-all',
-    brass: 'bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] text-[#1C2B1E] border border-[var(--color-gold)] shadow-sm hover:shadow transition-all font-bold',
     ink: 'bg-ink hover:bg-cloud hover:text-ink text-paper border border-ink shadow-sm hover:shadow transition-all',
   };
 
+  // Secondary / Outlined Colors
   const secondaryColors = {
-    moss: 'border border-moss text-moss hover:bg-moss hover:text-paper transition-all font-semibold',
-    clay: 'border border-clay text-clay hover:bg-clay hover:text-paper transition-all font-semibold',
-    brass: 'border border-[var(--color-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-[#1C2B1E] transition-all font-semibold',
-    ink: 'border border-ink text-ink hover:bg-ink hover:text-paper transition-all font-semibold',
+    gold: 'border border-[var(--color-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-[#1C2B1E] font-semibold',
+    brass: 'border border-[var(--color-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-[#1C2B1E] font-semibold',
+    white: 'border border-[#F0EBE0]/60 text-[#F0EBE0] hover:border-[#F0EBE0] hover:bg-white/10 font-medium',
+    paper: 'border border-paper text-paper hover:bg-paper hover:text-ink font-semibold',
+    moss: 'border border-moss text-moss hover:bg-moss hover:text-paper font-semibold',
+    clay: 'border border-clay text-clay hover:bg-clay hover:text-paper font-semibold',
+    ink: 'border border-ink text-ink hover:bg-ink hover:text-paper font-semibold',
   };
 
+  // Ghost Colors
   const ghostColors = {
+    gold: 'text-[var(--color-gold)] hover:opacity-75 after:bg-[var(--color-gold)] font-semibold',
+    brass: 'text-[var(--color-gold)] hover:opacity-75 after:bg-[var(--color-gold)] font-semibold',
+    white: 'text-[#F0EBE0] hover:text-white after:bg-[#F0EBE0] font-semibold',
+    paper: 'text-paper hover:opacity-75 after:bg-paper font-semibold',
     moss: 'text-moss hover:opacity-75 after:bg-moss font-semibold',
     clay: 'text-clay hover:opacity-75 after:bg-clay font-semibold',
-    brass: 'text-[var(--color-gold)] hover:opacity-75 after:bg-[var(--color-gold)] font-semibold',
     ink: 'text-ink hover:opacity-75 after:bg-ink font-semibold',
   };
 
@@ -116,8 +136,8 @@ export function Button({
             'hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] cursor-pointer',
         ],
 
-        // Secondary Variant
-        variant === 'secondary' && [
+        // Secondary / Outline Variant
+        isOutline && [
           'bg-transparent',
           currentSize.pillPadding,
           secondaryColors[color] || secondaryColors.ink,

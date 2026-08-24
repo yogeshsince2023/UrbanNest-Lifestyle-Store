@@ -131,11 +131,11 @@ export function Offers({ onClaimOffer, className }) {
             <Button
               type="button"
               variant="primary"
-              color="paper"
+              color="white"
               size="lg"
               onClick={handleClaim}
               rightIcon={<ArrowRight className="w-4 h-4 text-[#1C2B1E]" />}
-              className="bg-[#F0EBE0] text-[#1C2B1E] font-bold shadow-md hover:shadow-lg justify-center hover:bg-white text-base px-7 py-3.5"
+              className="font-bold shadow-md hover:shadow-lg justify-center text-base px-7 py-3.5"
             >
               Shop Stationery
             </Button>

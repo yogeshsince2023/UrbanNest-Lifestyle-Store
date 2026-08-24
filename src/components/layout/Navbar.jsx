@@ -193,13 +193,13 @@ export function Navbar({ cartCount = 0, onCartClick, onAskClick, onThemeToggle }
             <div>
               <Button
                 variant="primary"
-                color="ink"
+                color="gold"
                 size="lg"
                 onClick={() => {
                   setIsMobileMenuOpen(false);
                   if (onAskClick) onAskClick();
                 }}
-                className="w-full text-base py-4 bg-[var(--color-gold)] text-[#1C2B1E] font-bold"
+                className="w-full text-base py-4 font-bold shadow-md"
               >
                 Inquire
               </Button>

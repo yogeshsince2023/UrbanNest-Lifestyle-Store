@@ -204,11 +204,11 @@ export function ProductCard({ product, onAddToCart, className }) {
               <Button
                 type="button"
                 variant="primary"
-                color="ink"
+                color="gold"
                 size="md"
                 onClick={handleAdd}
                 aria-label={`Add ${product.name} to cart`}
-                className="w-full shadow-none border-0 text-sm py-3 bg-[var(--color-gold)] text-[#1C2B1E] font-bold"
+                className="w-full shadow-xs text-sm py-3 font-bold"
                 hasHole={false}
                 leftIcon={
                   isJustAdded ? (
